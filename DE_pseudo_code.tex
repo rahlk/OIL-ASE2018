@@ -1,0 +1,43 @@
+\pdfoutput=1
+\begin{figure}[t!]
+\scriptsize  \begin{tabular}{p{.93\linewidth}}
+\hline
+INPUT: 
+\bi
+\item
+A dataset, as described in Table~\ref{table:dataset}; 
+\item
+A tuning goal $G$; e.g.,  $\mathit{MRE_{max}}$ or  $\mathit{SA_{min}}$ from \S\ref{sect:study};
+\item
+DE parameters: $\mathit{np}=20$,  $\mathit{gen}=2$ or $8$, $\mathit{f}=0.8$, $\mathit{cr}=0.7$ (selected using advice from~\cite{storn1997differential}).
+\ei
+OUTPUT: Best tunings for learners~(e.g., ABEN) found by DE
+
+~\\
+
+PROCEDURE:
+\bi
+\item Separate the data into $\mathit{train}$ and $\mathit{tune}$;
+\item Generate $np$ tunings as the initial population;
+\item Score each tuning $\mathit{pop_i}$ in the population with goal $G$; 
+% \item On the train data, build an ensemble and select the best:
+
+\item  For $i=1$ to $np$  do
+\be
+\item Generate amutant $m$  by extrapolating  3   members of population $a$, $b$, $c$ at probability $\mathit{cr}$. For  decision $m_k \in m$:
+     \bi
+      \item  $m_k= a_k + f*(b_k-c_k)$ (continuous values).
+      \item  $m_k= a_k \vee ~ ( b_k \vee c_k)$ (discrete values).
+     \ei
+\item Build a learner with parameters $m$ and train data;
+\item Score $m$ on tune data using $G$;
+\item Replace $\mathit{pop_i}$ with $m$ if $m$ is preferred to $\mathit{pop}_i$.;
+\ee
+ \item Repeat the last step until reach the number of $\mathit{gen}$;
+\item Return the last population as the final result.
+\ei 
+\\
+\hline
+\end{tabular}
+\caption{DOIL: uses   Storn's differential evolution method~\cite{storn1997differential}. }\label{fig:DE}
+\end{figure}

@@ -1,0 +1,177 @@
+\pdfoutput=1
+\begin{table*}[t!]
+\caption{Descriptive Statistics of the Datasets}\label{table:dataset}
+\renewcommand{\baselinestretch}{0.75} 
+\centering
+\begin{tabular}{cc}
+\scriptsize
+\begin{tabular}{|c|l|rrrr|}
+    \hline
+      & feature & min  & max & mean & std\\
+   \hline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\multirow{7}{*}{\begin{sideways}kemerer\end{sideways}}
+& Langu. & 1 & 3 & 1.2 & 0.6\\
+& Hdware & 1 & 6 & 2.3 & 1.7\\
+& Duration & 5 & 31 & 14.3 & 7.5\\
+& KSLOC & 39 & 450 & 186.6 & 136.8\\
+& AdjFP & 100 & 2307 & 999.1 & 589.6\\
+& RAWFP & 97 & 2284 & 993.9 & 597.4\\
+& Effort & 23 & 1107 & 219.2 & 263.1\\
+\hline
+\multirow{8}{*}{\begin{sideways}albrecht\end{sideways}}
+& Input & 7 & 193 & 40.2 & 36.9\\
+& Output & 12 & 150 & 47.2 & 35.2\\
+& Inquiry & 0 & 75 & 16.9 & 19.3\\
+& File & 3 & 60 & 17.4 & 15.5\\
+& FPAdj & 1 & 1 & 1.0 & 0.1\\
+& RawFPs & 190 & 1902 & 638.5 & 452.7\\
+& AdjFP & 199 & 1902 & 647.6 & 488.0\\
+& Effort & 0 & 105 & 21.9 & 28.4\\
+\hline
+\multirow{12}{*}{\begin{sideways}isbsg10\end{sideways}}
+% & Data\_Quality & 1 & 2 & 1.2 & 0.4\\
+& UFP & 1 & 2 & 1.2 & 0.4\\
+& IS & 1 & 10 & 3.2 & 3.0\\
+& DP & 1 & 5 & 2.6 & 1.1\\
+& LT & 1 & 3 & 1.6 & 0.8\\
+& PPL & 1 & 14 & 5.1 & 4.1\\
+& CA & 1 & 2 & 1.1 & 0.3\\
+& FS & 44 & 1371 & 343.8 & 304.2\\
+& RS & 1 & 4 & 1.7 & 0.9\\
+% & Recording\_Method & 1 & 4 & 1.8 & 1.0\\
+& FPS & 1 & 5 & 3.5 & 0.7\\
+& Effort & 87 & 14453 & 2959 & 3518\\
+\hline
+\multirow{8}{*}{\begin{sideways}finnish\end{sideways}}
+& hw & 1 & 3 & 1.3 & 0.6\\
+& at & 1 & 5 & 2.2 & 1.5\\
+& FP & 65 & 1814 & 763.6 & 510.8\\
+& co & 2 & 10 & 6.3 & 2.7\\
+& prod & 1 & 29 & 10.1 & 7.1\\
+& lnsize & 4 & 8 & 6.4 & 0.8\\
+& lneff & 6 & 10 & 8.4 & 1.2\\
+& Effort & 460 & 26670 & 7678 & 7135\\
+\hline
+
+\end{tabular} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+~
+
+\scriptsize
+\begin{tabular}{|c|l|rrrr|}
+    \hline
+      & feature
+    & min  & max & mean & std\\
+   \hline
+%%%%%
+
+
+\multirow{8}{*}{\begin{sideways}miyazaki\end{sideways}}
+& KLOC & 7 & 390 & 63.4 & 71.9\\
+& SCRN & 0 & 150 & 28.4 & 30.4\\
+& FORM & 0 & 76 & 20.9 & 18.1\\
+& FILE & 2 & 100 & 27.7 & 20.4\\
+& ESCRN & 0 & 2113 & 473.0 & 514.3\\
+& EFORM & 0 & 1566 & 447.1 & 389.6\\
+& EFILE & 57 & 3800 & 936.6 & 709.4\\
+& Effort & 6 & 340 & 55.6 & 60.1\\
+\hline
+\multirow{26}{*}{\begin{sideways}maxwell\end{sideways}}
+& App & 1 & 5 & 2.4 & 1.0\\
+& Har & 1 & 5 & 2.6 & 1.0\\
+& Dba & 0 & 4 & 1.0 & 0.4\\
+& Ifc & 1 & 2 & 1.9 & 0.2\\
+& Source & 1 & 2 & 1.9 & 0.3\\
+& Telon. & 0 & 1 & 0.2 & 0.4\\
+& Nlan & 1 & 4 & 2.5 & 1.0\\
+& T01 & 1 & 5 & 3.0 & 1.0\\
+& T02 & 1 & 5 & 3.0 & 0.7\\
+& T03 & 2 & 5 & 3.0 & 0.9\\
+& T04 & 2 & 5 & 3.2 & 0.7\\
+& T05 & 1 & 5 & 3.0 & 0.7\\
+& T06 & 1 & 4 & 2.9 & 0.7\\
+& T07 & 1 & 5 & 3.2 & 0.9\\
+& T08 & 2 & 5 & 3.8 & 1.0\\
+& T09 & 2 & 5 & 4.1 & 0.7\\
+& T10 & 2 & 5 & 3.6 & 0.9\\
+& T11 & 2 & 5 & 3.4 & 1.0\\
+& T12 & 2 & 5 & 3.8 & 0.7\\
+& T13 & 1 & 5 & 3.1 & 1.0\\
+& T14 & 1 & 5 & 3.3 & 1.0\\
+% & T15 & 1 & 5 & 3.3 & 0.7\\
+& Dura. & 4 & 54 & 17.2 & 10.7\\
+& Size & 48 & 3643 & 673.3 & 784.1\\
+& Time & 1 & 9 & 5.6 & 2.1\\
+& Effort & 583 & 63694 & 8223 & 10500\\
+\hline
+
+\end{tabular} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+~
+
+\scriptsize
+\begin{tabular}{|c|l|rrrr|}
+    \hline
+      & feature
+    & min  & max & mean & std\\
+  \hline
+%%%%%
+
+
+\multirow{7}{*}{\begin{sideways}desharnais\end{sideways}}
+& TeamExp & 0 & 4 & 2.3 & 1.3\\
+& MngExp & 0 & 7 & 2.6 & 1.5\\
+& Length & 1 & 36 & 11.3 & 6.8\\
+& Trans.s & 9 & 886 & 177.5 & 146.1\\
+& Entities & 7 & 387 & 120.5 & 86.1\\
+& AdjPts & 73 & 1127 & 298.0 & 182.3\\
+& Effort & 546 & 23940 & 4834 & 4188\\
+\hline
+\multirow{7}{*}{\begin{sideways}kitchenham\end{sideways}}
+& code & 1 & 6 & 2.1 & 0.9\\
+& type & 0 & 6 & 2.4 & 0.9\\
+& duration & 37 & 946 & 206.4 & 134.1\\
+& fun\_pts & 15 & 18137 & 527.7 & 1522\\
+& estimate & 121 & 79870 & 2856 & 6789\\
+& esti\_mtd & 1 & 5 & 2.5 & 0.9\\
+& Effort & 219 & 113930 & 3113 & 9598\\
+\hline
+\multirow{19}{*}{\begin{sideways}china\end{sideways}}
+& ID & 1 & 499 & 250.0 & 144.2\\
+& AFP & 9 & 17518 & 486.9 & 1059\\
+& Input & 0 & 9404 & 167.1 & 486.3\\
+& Output & 0 & 2455 & 113.6 & 221.3\\
+& Enquiry & 0 & 952 & 61.6 & 105.4\\
+& File & 0 & 2955 & 91.2 & 210.3\\
+& Interface & 0 & 1572 & 24.2 & 85.0\\
+& Added & 0 & 13580 & 360.4 & 829.8\\
+& Changed & 0 & 5193 & 85.1 & 290.9\\
+& Deleted & 0 & 2657 & 12.4 & 124.2\\
+& PDR\_A & 0 & 84 & 11.8 & 12.1\\
+& PDR\_U & 0 & 97 & 12.1 & 12.8\\
+& NPDR\_A & 0 & 101 & 13.3 & 14.0\\
+& NPDU\_U & 0 & 108 & 13.6 & 14.8\\
+& Resource & 1 & 4 & 1.5 & 0.8\\
+& Dev.Type & 0 & 0 & 0.0 & 0.0\\
+& Duration & 1 & 84 & 8.7 & 7.3\\
+& N\_effort & 31 & 54620 & 4278 & 7071\\
+& Effort & 26 & 54620 & 3921 & 6481\\
+\hline
+
+\end{tabular}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{tabular}
+\end{table*}

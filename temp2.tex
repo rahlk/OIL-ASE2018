@@ -1,0 +1,238 @@
+%\newcommand{\nm}[1] {\hline\multicolumn{1}{c}{\cellcolor{black} { {\bf \textcolor{white}{#1}}}}}
+%\pdfoutput=1
+
+
+\begin{figure*}[!b]
+ \setlength{\belowcaptionskip}{-16pt}
+ 
+\begin{center}
+\renewcommand{\baselinestretch}{0.65} 
+ \resizebox{0.4\textwidth}{!}{\begin{minipage}{3.5in}
+{\small 
+
+\begin{center}a. \% MRE  ({\em smaller} values are {\em better}).\end{center}
+%\begin{tabular}{l@{~~~~}l@{~~~~}r@{~~~~}r@{~~}c@{}}
+\begin{tabular}{llrrc}
+  {\textbf{Rank}}& \textbf{Using} & \textbf{Med.} & \textbf{IQR} & \\ 
+  
+  
+  %%% generating from latex_plotting.py::plot_mre_for_all
+\nm{china}\\
+\rowcolor{black!10}    1* &      CART\_DE8 &    8 &  1 & \quart{7}{1}{8}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE2 &    9 &  2 & \quart{8}{2}{9}{100} \\
+    2 &      ABEN\_NSGA2 &    12 &  6 & \quart{12}{6}{12}{100} \\
+    2 &      CART0 &    15 &  2 & \quart{14}{2}{15}{100} \\
+    2 &      CART\_MOEAD &    16 &  6 & \quart{11}{6}{16}{100} \\
+    3 &      ABEN\_DE8 &    25 &  16 & \quart{18}{16}{25}{100} \\
+    3 &      ABEN\_DE2 &    28 &  18 & \quart{20}{18}{28}{100} \\
+    3 &      ABEN\_RD160 &    30 &  18 & \quart{23}{18}{30}{100} \\
+    3 &      ABEN\_RD40 &    34 &  16 & \quart{26}{16}{34}{100} \\
+    4 &      CART\_MOEAD &    40 &  10 & \quart{44}{10}{40}{100} \\
+    4 &      CART\_NSGA2 &    40 &  17 & \quart{40}{17}{40}{100} \\
+    5 &      ABE0 &    54 &  10 & \quart{47}{10}{54}{100} \\
+    5 &      CoGEE &    57 &  11 & \quart{52}{11}{57}{100} \\
+    6 &      ATLM &    69 &  18 & \ofr \\
+\nm{albrecht}\\
+    1 &      ABEN\_RD160 &    48 &  29 & \quart{36}{29}{48}{100} \\
+    1 &      ABEN\_DE2 &    48 &  20 & \quart{40}{20}{48}{100} \\
+\rowcolor{black!10}    1* &      ABE0 &    51 &  28 & \quart{39}{28}{51}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE8 &    52 &  28 & \quart{39}{28}{52}{100} \\
+     2 &      CART\_DE2  &    56 &  23 & \quart{48}{23}{56}{100} \\
+    
+    2 &      CART0 &    59 &  21 & \quart{48}{21}{59}{100} \\
+ 
+    4 &      ATLM &    178 &  122 & \ofr \\
+    4 &      CoGEE &    1375 &  1101 & \ofr \\
+\nm{desharnais}\\
+    1 &      CoGEE &    35 &  14 & \quart{28}{14}{35}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE8 &    39 &  19 & \quart{31}{19}{39}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE2 &    41 &  19 & \quart{31}{19}{41}{100} \\
+  
+    2 &      ATLM &    46 &  18 & \quart{37}{18}{46}{100} \\
+  
+    3 &      CART0 &    51 &  17 & \quart{46}{17}{51}{100} \\
+    3 &      ABE0 &    56 &  33 & \quart{38}{33}{56}{100} \\
+\nm{finnish}\\
+\rowcolor{black!10}    1* &      CART\_NSGA2 &    14 &  12 & \quart{8}{12}{14}{100} \\
+ 
+  2 &      CART\_DE8  &    24 &  16 & \quart{16}{16}{24}{100} \\
+  2 &      CART\_DE2  &    30 &  11 & \quart{24}{11}{30}{100} \\
+      
+    2 &      CART0 &    32 &  16 & \quart{25}{16}{32}{100} \\
+    
+    3 &      ABE0 &    43 &  26 & \quart{34}{26}{43}{100} \\
+    
+    4 &      CoGEE &    59 &  9 & \quart{54}{9}{59}{100} \\
+    6 &      ATLM &    87 &  72 & \quart{49}{72}{87}{100} \\
+\nm{kemerer}\\
+\rowcolor{black!10}    1* &      CART\_NSGA2 &    36 &  21 & \quart{31}{21}{33}{100} \\
+    
+    
+    2 &      CART\_DE2  &    54 &  22 & \quart{41}{22}{54}{100} \\ 
+    2 &      ABE0 &    55 &  38 & \quart{32}{38}{55}{100} \\
+    3 &      CART\_DE8  &    61 &  21 & \quart{49}{21}{61}{100} \\
+    
+    
+  
+    3 &      CART0 &    61 &  20 & \quart{52}{20}{61}{100} \\
+   
+    4 &      ATLM &    99 &  444 & \ofr \\
+    4 &      CoGEE &    234 &  200 & \ofr \\
+\nm{maxwell}\\
+\rowcolor{black!10}    1* &      CART\_DE8 &    43 &  26 & \quart{30}{26}{43}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE2 &    45 &  23 & \quart{33}{23}{45}{100} \\
+    1 &      CoGEE &    45 &  17 & \quart{37}{17}{45}{100} \\
+  
+    2 &      ABE0 &    67 &  32 & \quart{51}{32}{67}{100} \\
+    2 &      CART0 &    68 &  20 & \quart{56}{20}{68}{100} \\
+   
+    2 &      CART\_MOEAD &    75 &  28 & \quart{61}{28}{75}{100} \\
+ 
+\nm{miyazaki}\\
+\rowcolor{black!10}    1* &      CART\_DE8 &    42 &  27 & \quart{28}{27}{42}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE2 &    45 &  31 & \quart{31}{31}{45}{100} \\
+    1 &      CART\_NSGA2 &    48 &  31 & \quart{31}{31}{48}{100} \\
+    2 &      CoGEE &    50 &  30 & \quart{38}{30}{50}{100} \\
+ 
+    2 &      ABE0 &    56 &  35 & \quart{38}{35}{56}{100} \\
+    2 &      CART0 &    56 &  20 & \quart{48}{20}{56}{100} \\
+   
+    4 &      ATLM &    158 &  102 & \ofr \\
+
+\nm{isbsg10}\\
+    1 &      CoGEE &    69 &  157 & \quart{57}{43}{69}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE2 &    72 &  15 & \quart{64}{15}{72}{100} \\
+\rowcolor{black!10}    1* &      CART\_DE8 &    73 &  15 & \quart{64}{15}{73}{100} \\
+\rowcolor{black!10}    1* &      ABE0 &    75 &  19 & \quart{64}{19}{75}{100} \\
+\rowcolor{black!10}    1* &      CART0 &    75 &  10 & \quart{71}{10}{75}{100} \\
+    
+    3 &      ATLM &    127 &  124 & \ofr \\
+\nm{kitchenham}\\
+\rowcolor{black!10}    1* &      CoGEE &    12 &  7 & \quart{7}{7}{12}{100} \\
+    2 &      ATLM &    26 &  12 & \quart{20}{12}{26}{100} \\
+       2 &      CART\_DE2  &    26 &  10 & \quart{22}{10}{26}{100} \\
+    2 &      CART\_DE8  &    27 &  11 & \quart{21}{11}{27}{100} \\
+    
+    2 &      CART0 &    34 &  11 & \quart{30}{11}{34}{100} \\
+    3 &      CART0 &    34 &  11 & \quart{30}{11}{34}{100} \\
+  
+    4 &      ABE0 &    47 &  20 & \quart{36}{20}{47}{100} \\ 
+
+
+ %%% ----END HERE----------------------------------
+  \end{tabular}} \end{minipage}}\hspace{20mm}
+\resizebox{0.3\textwidth}{!}{\begin{minipage}{3.5in}
+{\small   
+\begin{center}b. \% SA ({\em larger} values are {\em better})\end{center}
+
+\begin{tabular}{llrrc}
+  {\textbf{Rank}}& \textbf{Using} & \textbf{Med.} & \textbf{IQR} & \\ 
+   
+    %%% generating from latex_plotting.py::plot_sa_for_all
+\nm{china}\\
+    1 &      CART\_DE8 &    8 &  1 & \quart{7}{1}{8}{100} \\
+    1 &      CART\_DE30 &    9 &  2 & \quart{8}{2}{9}{100} \\
+    1 &      CART\_DE10 &    9 &  2 & \quart{8}{2}{9}{100} \\
+    1 &      CART\_DE2 &    9 &  2 & \quart{8}{2}{9}{100} \\
+    2 &      ABEN\_NSGA2 &    12 &  6 & \quart{12}{6}{12}{100} \\
+    2 &      ABEN\_DE30 &    12 &  7 & \quart{8}{7}{12}{100} \\
+    2 &      ABEN\_GA100 &    14 &  0 & \quart{14}{0}{14}{100} \\
+    2 &      CART0 &    15 &  2 & \quart{14}{2}{15}{100} \\
+    2 &      CART\_MOEAD &    16 &  6 & \quart{11}{6}{16}{100} \\
+    3 &      ABEN\_DE8 &    25 &  16 & \quart{18}{16}{25}{100} \\
+    3 &      ABEN\_DE10 &    27 &  16 & \quart{19}{16}{27}{100} \\
+    3 &      ABEN\_DE2 &    28 &  18 & \quart{20}{18}{28}{100} \\
+    3 &      ABEN\_RD160 &    30 &  18 & \quart{23}{18}{30}{100} \\
+    3 &      ABEN\_RD40 &    34 &  16 & \quart{26}{16}{34}{100} \\
+    4 &      CART\_MOEAD &    40 &  10 & \quart{44}{10}{40}{100} \\
+    4 &      CART\_NSGA2 &    40 &  17 & \quart{40}{17}{40}{100} \\
+    5 &      ABE0 &    54 &  10 & \quart{47}{10}{54}{100} \\
+    5 &      CoGEE &    57 &  11 & \quart{52}{11}{57}{100} \\
+    6 &      ATLM &    69 &  18 & \ofr \\
+\nm{albrecht}\\
+    1 &      ABEN\_DE2 &    63 &  11 & \quart{56}{11}{63}{100} \\
+    1 &      ABEN\_DE8 &    62 &  18 & \quart{50}{18}{62}{100} \\
+    1 &      ABEN\_RD160 &    60 &  18 & \quart{50}{18}{60}{100} \\
+    1 &      ABE0 &    60 &  16 & \quart{52}{16}{60}{100} \\
+    2 &      CART0 &    45 &  40 & \quart{20}{40}{45}{100} \\
+    3 &      ATLM &    18 &  30 & \quart{13}{30}{18}{100} \\
+    4 &      CoGEE &    -697 &  566 & \ofr \\
+\nm{desharnais}\\
+    1 &      CoGEE &    47 &  16 & \quart{40}{16}{47}{100} \\
+    1 &      ABEN\_DE8 &    44 &  24 & \quart{28}{24}{44}{100} \\
+    1 &      ABEN\_NSGA2 &    43 &  27 & \quart{27}{27}{43}{100} \\
+    1 &      ATLM &    42 &  13 & \quart{35}{13}{42}{100} \\
+    1 &      ABEN\_RD40 &    42 &  27 & \quart{26}{27}{42}{100} \\
+    1 &      CART\_DE8 &    42 &  27 & \quart{26}{27}{42}{100} \\
+    1 &      ABEN\_DE2 &    41 &  28 & \quart{24}{28}{41}{100} \\
+    1 &      CART\_DE2 &    40 &  26 & \quart{26}{26}{40}{100} \\
+    1 &      ABEN\_RD160 &    40 &  31 & \quart{24}{31}{40}{100} \\
+    2 &      ABE0 &    30 &  42 & \quart{9}{42}{30}{100} \\
+    2 &      CART0 &    23 &  18 & \quart{12}{18}{23}{100} \\
+\nm{finnish}\\    
+    1 &      CART\_DE8 &    81 &  14 & \quart{72}{14}{81}{100} \\
+    3 &      ABE0 &    49 &  22 & \quart{37}{22}{49}{100} \\
+    4 &      ATLM &    40 &  49 & \quart{4}{49}{40}{100} \\
+    4 &      CoGEE &    37 &  22 & \quart{28}{22}{37}{100} \\
+\nm{kemerer}\\
+    1 &      ABEN\_DE8 &    41 &  37 & \quart{24}{37}{41}{100} \\
+    1 &      ABEN\_DE2 &    39 &  30 & \quart{26}{30}{39}{100} \\
+    1 &      ABE0 &    37 &  41 & \quart{20}{41}{37}{100} \\
+    1 &      ABEN\_RD160 &    37 &  46 & \quart{10}{46}{37}{100} \\
+    1 &      ABEN\_RD40 &    36 &  18 & \quart{28}{18}{36}{100} \\
+    2 &      CART0 &    12 &  48 & \quart{-14}{48}{12}{100} \\
+    3 &      CoGEE &    -63 &  124 & \ofr \\
+    3 &      ATLM &    -48 &  507 & \ofr \\
+\nm{maxwell}\\
+    1 &      CoGEE &    59 &  20 & \quart{51}{20}{59}{100} \\
+    1 &      CART\_DE2 &    56 &  28 & \quart{38}{28}{56}{100} \\
+    1 &      CART\_DE8 &    56 &  31 & \quart{36}{31}{56}{100} \\
+    2 &      ABE0 &    39 &  37 & \quart{18}{37}{39}{100} \\
+    2 &      ATLM &    33 &  21 & \quart{28}{21}{33}{100} \\
+    3 &      CART0 &    16 &  21 & \quart{2}{21}{16}{100} \\
+\nm{miyazaki}\\
+    1 &      CoGEE &    61 &  28 & \quart{43}{28}{61}{100} \\
+    3 &      ABE0 &    40 &  35 & \quart{21}{35}{40}{100} \\
+    4 &      ATLM &    23 &  56 & \quart{-12}{56}{23}{100} \\
+    5 &      CART0 &    10 &  21 & \quart{-1}{21}{10}{100} \\
+\nm{isbsg10}\\
+    1 &      ABEN\_RD40 &    33 &  30 & \quart{15}{30}{33}{100} \\
+    1 &      ABEN\_DE2 &    31 &  28 & \quart{16}{28}{31}{100} \\
+    1 &      ABEN\_RD160 &    30 &  49 & \quart{-1}{49}{30}{100} \\
+    1 &      ABEN\_DE8 &    28 &  57 & \quart{-4}{57}{28}{100} \\
+    1 &      ATLM &    28 &  19 & \quart{25}{19}{28}{100} \\
+    1 &      ABE0 &    28 &  29 & \quart{14}{29}{28}{100} \\
+    1 &      ABEN\_NSGA2 &    26 &  33 & \quart{9}{33}{26}{100} \\
+    1 &      CoGEE &    25 &  26 & \quart{12}{26}{25}{100} \\  
+    2 &      CART0 &    15 &  24 & \quart{2}{24}{15}{100} \\
+\nm{kitchenham}\\
+    1 &      CoGEE &    90 &  6 & \quart{87}{6}{90}{100} \\
+    2 &      ATLM &    79 &  8 & \quart{74}{8}{79}{100} \\
+    3 &      ABE0 &    64 &  14 & \quart{56}{14}{64}{100} \\
+    4 &      CART0 &    56 &  15 & \quart{47}{15}{56}{100} \\
+
+
+   %%% ----END HERE----------------------------------
+   
+   
+  \end{tabular}
+  }
+
+\end{minipage}}
+\end{center}
+ \caption{
+\%  {\bf MRE} and \% {\bf SA} seen in 20 repeats.
+ {\bf Med} is the 50th percentile and {\bf IQR} is the {\em inter-quartile range}; i.e., 75th-25th percentile. 
+    Lines with a dot in the middle (e.g.,\protect\quartex{3}{13}{13}{0})
+   show   median values with the IQR.   
+   MRE and SA results are sorted in different directions since better MRE and SA values are smaller and larger (respectively).
+   The left-hand side columns {\bf Rank} results (and the {\em smaller}, the {\em better}).
+    Ranks separate statistically different results, as computed by a bootstrap test (95\% confidence)
+   and the A12 test~\cite{Whigham:2015:BMS:2776776.2738037}). \ofr denote
+   results that are so bad, that they  fall outside of this figure
+   s range of [0,100] \%. 
+   \colorbox{black!10}{1*} denotes rows of faster best-ranked methods.}
+ \label{fig:jur}
+\end{figure*}
+
+
