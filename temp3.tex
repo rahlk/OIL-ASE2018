@@ -1,13 +1,7 @@
-\newcommand{\nm}[1] {\hline\multicolumn{1}{c}{\cellcolor{black} { {\bf \textcolor{white}{#1}}}}}
-\pdfoutput=1
-
-
-
-\begin{figure*}[!b]
-\begin{center}
+\begin{figure*}
 \renewcommand{\baselinestretch}{0.65} 
- \resizebox{0.4\textwidth}{!}{\begin{minipage}{4in}
-{\small 
+ \resizebox{0.45\textwidth}{!}{\begin{minipage}{4in}
+{\small
 
 \begin{center}a. \% MRE  ({\em smaller} values are {\em better}).\end{center}
 \noindent \begin{tabular}{llrrc}
@@ -38,7 +32,15 @@
     2 &      CART\_MOEAD &    45 &  18 & \quart{37}{18}{46}{100} \\
     2 &      ATLM &    46 &  18 & \quart{37}{18}{46}{100} \\
     3 &      CART0 &    51 &  17 & \quart{46}{17}{51}{100} \\
-    3 &      ABE0 &    56 &  33 & \quart{38}{33}{56}{100} \\\hline
+    3 &      ABE0 &    56 &  33 & \quart{38}{33}{56}{100} \\
+    \\
+    \\
+    \\
+    \
+\    \\
+    \\
+    \\
+    \hline
 \nm{finnish}\\
     \rowcolor{gray!20}   1* &      CART\_NSGA2 &    14 &  12 & \quart{8}{12}{14}{100} \\
     2 &      CART\_DE8 &    24 &  16 & \quart{16}{16}{24}{100} \\
@@ -46,7 +48,7 @@
     2 &      CART0 &    32 &  16 & \quart{25}{16}{32}{100} \\
     3 &      ABE0 &    43 &  26 & \quart{34}{26}{43}{100} \\
     4 &      CART\_MOEAD &    53 &  32 & \quart{49}{32}{53}{100} \\
-    6 &      ATLM &    87 &  72 & \quart{49}{72}{87}{100} \\\hline
+    6 &      ATLM &    87 &  72 & \quart{49}{57}{87}{100} \\\hline
 \nm{kemerer}\\
     \rowcolor{gray!20}   1* &      CART\_NSGA2 &    36 &  21 & \quart{31}{21}{33}{100} \\
     2 &      CART\_MOEAD &    46 &  15 & \quart{31}{15}{43}{100} \\
@@ -54,7 +56,11 @@
     2 &      ABE0 &    55 &  38 & \quart{32}{38}{55}{100} \\
     3 &      CART\_DE8 &    61 &  21 & \quart{49}{21}{61}{100} \\
     3 &      CART0 &    61 &  20 & \quart{52}{20}{61}{100} \\
-    4 &      ATLM &    99 &  444 & \ofr \\\hline
+    4 &      ATLM &    99 &  444 & \ofr \\
+    \\
+    \\
+    \\
+    \hline
 \nm{maxwell}\\
   \rowcolor{gray!20}   1* &      CART\_DE8 &    43 &  26 & \quart{30}{26}{43}{100} \\
    \rowcolor{gray!20}   1* &      CART\_DE2 &    45 &  23 & \quart{33}{23}{45}{100} \\
@@ -79,7 +85,15 @@
   \rowcolor{gray!20}   1* &      ABE0 &    75 &  19 & \quart{64}{19}{75}{100} \\
  \rowcolor{gray!20}   1* &      CART0 &    75 &  10 & \quart{71}{10}{75}{100} \\
     2 &      CART\_MOEAD &    89 &  11 & \quart{83}{11}{89}{100} \\
-    3 &      ATLM &    127 &  124 & \ofr \\\hline
+    3 &      ATLM &    127 &  124 & \ofr \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \hline
 \nm{kitchenham}\\
   \rowcolor{gray!20}   1* &      CoGEE &    12 &  7 & \quart{7}{7}{12}{100} \\
     2 &      ATLM &    26 &  12 & \quart{20}{12}{26}{100} \\
@@ -89,22 +103,9 @@
     4 &      ABE0 &    47 &  20 & \quart{36}{20}{47}{100} \\
     5 &      CART\_MOEAD &    69 &  32 & \quart{50}{32}{69}{100} \\
  %%% ----END HERE----------------------------------
- ~\\
- ~\\
- ~\\
- ~\\
-  ~\\
- ~\\
- ~\\
- ~\\
- ~\\
- ~\\
- ~\\
- ~\\
- ~\\
-  \end{tabular}} \end{minipage}}\hspace{20mm}
-\resizebox{0.4\textwidth}{!}{\begin{minipage}{4in}
-{\small   
+  \end{tabular}} \end{minipage}}\hspace{12mm}
+\resizebox{0.45\textwidth}{!}{\begin{minipage}{4in}
+{\small
 \begin{center}b. \% SA ({\em larger} values are {\em better})\end{center}
 
 \noindent
@@ -148,7 +149,9 @@
     2 &      CART\_MOEAD &    71 &  11 & \quart{70}{11}{71}{100} \\
     2 &      CART0 &    69 &  19 & \quart{55}{19}{69}{100} \\
     3 &      ABE0 &    49 &  22 & \quart{37}{22}{49}{100} \\
-    4 &      ATLM &    40 &  49 & \quart{4}{49}{40}{100} \\\hline
+    4 &      ATLM &    40 &  49 & \quart{4}{49}{40}{100} \\
+    \\
+    \hline
 \nm{kemerer}\\
    \rowcolor{gray!20}   1* &      CART\_MOEAD &    47 &  47 & \quart{23}{47}{47}{100} \\
     1 &      ABEN\_DE8 &    41 &  37 & \quart{24}{37}{41}{100} \\
@@ -156,8 +159,8 @@
    \rowcolor{gray!20}   1* &      ABE0 &    37 &  41 & \quart{20}{41}{37}{100} \\
     1 &      ABEN\_RD160 &    37 &  46 & \quart{10}{46}{37}{100} \\
     1 &      ABEN\_RD40 &    36 &  18 & \quart{28}{18}{36}{100} \\
-    2 &      CART\_DE2 &    30 &  82 & \quart{-32}{82}{30}{100} \\
-    2 &      CART\_DE8 &    26 &  102 & \quart{-57}{102}{26}{100} \\
+    2 &      CART\_DE2 &    30 &  82 & \quart{-14}{63}{30}{100} \\
+    2 &      CART\_DE8 &    26 &  102 & \quart{-14}{57}{26}{100} \\
     2 &      CART0 &    12 &  48 & \quart{-14}{48}{12}{100} \\
     3 &      ATLM &    -48 &  507 & \ofr \\\hline
 \nm{maxwell}\\
@@ -174,7 +177,9 @@
     2 &      CART\_DE8 &    45 &  36 & \quart{23}{36}{45}{100} \\
     3 &      CART\_DE2 &    41 &  36 & \quart{20}{36}{41}{100} \\
     3 &      ABE0 &    40 &  35 & \quart{21}{35}{40}{100} \\
-    4 &      ATLM &    23 &  56 & \quart{-12}{56}{23}{100} \\\hline
+    4 &      ATLM &    23 &  56 & \quart{-12}{56}{23}{100} \\
+    \\
+    \hline
 
 \nm{isbsg10}\\
   \rowcolor{gray!20}   1* &      CART\_MOEAD &    38 &  11 & \quart{29}{11}{38}{100} \\
@@ -208,13 +213,20 @@
 
 \end{minipage}
 }
-\end{center}
  \caption{
-\%  {\bf MRE} and \% {\bf SA} seen in 20 repeats. For space reasons,
-results slightly truncated (not shown are any {\em Rank$>1$} methods
-are are also listed as being {\em slower} in \fig{runtimes}). For
-all results, see  pasteboard.co/Hi77tVD.png.
-
+\%  {\bf MRE} and \% {\bf SA} results
+from our cross-validation studies. Same format as Figure~\ref{eg}.
+The gray rows show the {\em Rank=1+} results recommended
+for each data sets.
+ For space reasons,
+results slightly truncated
+(not shown here are  any {\em Rank$>1$} methods
+that  are  listed as  {\em slower} in Table~\ref{tbl:runtime}
+since   such sub-optimal and slower
+ treatments need not be discussed further).
+For
+all results, see  pasteboard.co/Hi77tVD.png. The phrase ``\ofr'' denotes results
+that are so bad that they fall outside of the 0\%..100\% range shown here.
    }
  \label{fig:jur}
 \end{figure*}

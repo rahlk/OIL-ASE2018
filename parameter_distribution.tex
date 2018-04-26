@@ -1,88 +1,149 @@
 \begin{table*}[!t]
-\caption{In twenty runs of CART\_DE2, how often was each hyperparameter selected in 4 quarter ranges? (0-25\%, 25-50\%, 50-75\%, 75-100\%,)}\label{table:para_dist}
+\caption{Tunings discovered by hyperparameter selections
+(CART+DE). Table rows
+sorted by number of rows in data sets
+(smallest on top).
+Cells in this table show the percent of times a particular choice was made. White text on black denotes choices made in more than 50\% of tunings. }\label{table:para_dist}
 \begin{center}
 %\renewcommand{\baselinestretch}{0.75} 
-\footnotesize
-%\resizebox{\textwidth}{!}{
-\begin{tabular}{ l|c|c|c|c|c|c}
+\scriptsize
+ 
+\begin{tabular}{ r|c|c|c|c|c|c}
 
-~ & max\_feature & max\_depth & min\_samples\_leaf & min\_sample\_split  \\\cline{2-7} 
-
+~ & \%max\_features & max\_depth & min\_sample\_split & min\_samples\_leaf  \\  
+~ & (selected at random; & (of trees) & (continuation & (termination \\ 
+~ & 100\% means ``use all'') &   & criteria) & criteria)   \\\cline{2-7} 
 ~ &
 \makecell[l]{
 \ 25\%\ 50\%\ 75\%\ 100\%} &
 \makecell[l]{
-\ 25\%\ 50\%\ 75\%\ 100\%} &
+\ $\leq$03 \ $\leq$06 \ $\leq$09 \ $\leq$12} &
 \makecell[l]{
-\ 25\%\ 50\%\ 75\%\ 100\%} &
+\ $\leq$5 \ $\leq$10 \ $\leq$15 \ $\leq$20} &
 \makecell[l]{
-\ 25\%\ 50\%\ 75\%\ 100\%}
+\ $\leq$03 \ $\leq$06 \ $\leq$09 \ $\leq$12} 
  \\
 \hline
 
 
-kemerer 
-&\dbox{28}\dbox{22}\dbox{28}\dbox{22} 
-&\dbox{30}\dbox{23}\dbox{15}\dbox{32} 
-&\wbox{68}\dbox{15}\dbox{10}\dbox{07} 
-&\wbox{73}\dbox{08}\dbox{12}\dbox{07}\\ 
+% kemerer 
+% &\dbox{28}\dbox{22}\dbox{28}\dbox{22} 
+% &\wbox{99}\dbox{00}\dbox{00}\dbox{00} 
+% &\wbox{68}\dbox{15}\dbox{10}\dbox{07} 
+% &\wbox{73}\dbox{08}\dbox{12}\dbox{07}\\ 
 
-albrecht 
-&\dbox{20}\dbox{28}\dbox{25}\dbox{27} 
-&\dbox{22}\dbox{32}\dbox{18}\dbox{28}
-&\wbox{55}\dbox{43}\dbox{02}\dbox{00} 
-&\wbox{98}\dbox{00}\dbox{02}\dbox{00}\\ 
+% albrecht 
+% &\dbox{20}\dbox{28}\dbox{25}\dbox{27} 
+% &\wbox{99}\dbox{00}\dbox{00}\dbox{00} 
+% &\wbox{55}\dbox{43}\dbox{02}\dbox{00} 
+% &\wbox{98}\dbox{00}\dbox{02}\dbox{00}\\ 
 
-isbsg10 
-&\dbox{20}\dbox{32}\dbox{28}\dbox{20} 
-&\dbox{22}\dbox{20}\dbox{28}\dbox{30}
-&\dbox{45}\dbox{25}\dbox{22}\dbox{08}
-&\wbox{78}\dbox{18}\dbox{02}\dbox{02}\\ 
+% isbsg10 
+% &\dbox{20}\dbox{32}\dbox{28}\dbox{20} 
+% &\wbox{99}\dbox{00}\dbox{00}\dbox{00} 
+% &\dbox{45}\dbox{25}\dbox{22}\dbox{08}
+% &\wbox{78}\dbox{18}\dbox{02}\dbox{02}\\ 
 
-finnish 
-&\dbox{07}\dbox{10}\dbox{35}\dbox{48} 
-&\dbox{20}\dbox{34}\dbox{23}\dbox{23} 
-&\wbox{55}\dbox{32}\dbox{05}\dbox{08} 
-&\wbox{83}\dbox{17}\dbox{00}\dbox{00}\\ 
+% finnish 
+% &\dbox{07}\dbox{10}\dbox{35}\dbox{48} 
+% &\wbox{99}\dbox{00}\dbox{00}\dbox{00} 
+% &\wbox{55}\dbox{32}\dbox{05}\dbox{08} 
+% &\wbox{83}\dbox{17}\dbox{00}\dbox{00}\\ 
 
-miyazaki 
-&\dbox{09}\dbox{23}\dbox{33}\dbox{35} 
-&\dbox{29}\dbox{27}\dbox{19}\dbox{25} 
-&\dbox{40}\dbox{27}\dbox{18}\dbox{15} 
-&\wbox{69}\dbox{23}\dbox{05}\dbox{03}\\ 
+% miyazaki 
+% &\dbox{09}\dbox{23}\dbox{33}\dbox{35} 
+% &\wbox{98}\dbox{02}\dbox{00}\dbox{00} 
+% &\dbox{40}\dbox{27}\dbox{18}\dbox{15} 
+% &\wbox{69}\dbox{23}\dbox{05}\dbox{03}\\ 
 
-maxwell 
-&\dbox{09}\dbox{14}\dbox{39}\dbox{38} 
-&\dbox{25}\dbox{23}\dbox{21}\dbox{31} 
-&\dbox{41}\dbox{32}\dbox{17}\dbox{10} 
-&\wbox{63}\dbox{33}\dbox{03}\dbox{01}\\ 
+% maxwell 
+% &\dbox{09}\dbox{14}\dbox{39}\dbox{38} 
+% &\wbox{99}\dbox{00}\dbox{00}\dbox{00} 
+% &\dbox{41}\dbox{32}\dbox{17}\dbox{10} 
+% &\wbox{63}\dbox{33}\dbox{03}\dbox{01}\\ 
 
+% desharnais
+% &\dbox{17}\dbox{21}\dbox{40}\dbox{22} 
+% &\wbox{98}\dbox{02}\dbox{00}\dbox{00} 
+% &\dbox{32}\dbox{29}\dbox{18}\dbox{21} 
+% &\dbox{40}\dbox{38}\dbox{19}\dbox{03}\\ 
+
+% kitchenham
+% &\dbox{02}\dbox{17}\dbox{33}\dbox{48} 
+% &\wbox{95}\dbox{05}\dbox{00}\dbox{00} 
+% &\dbox{32}\dbox{28}\dbox{21}\dbox{19} 
+% &\wbox{56}\dbox{28}\dbox{09}\dbox{07}\\ 
+
+% china 
+% &\dbox{00}\dbox{07}\dbox{37}\wbox{56} 
+% &\wbox{51}\dbox{49}\dbox{00}\dbox{00} 
+% &\dbox{49}\dbox{32}\dbox{14}\dbox{05} 
+% &\wbox{79}\dbox{20}\dbox{01}\dbox{00}\\ 
+
+kemerer
+&\dbox{18}\dbox{32}\dbox{23}\dbox{27}
+&\wbox{57}\dbox{37}\dbox{05}\dbox{00}
+&\wbox{95}\dbox{02}\dbox{03}\dbox{00}
+&\wbox{92}\dbox{02}\dbox{05}\dbox{02}
+\\
+albrecht
+&\dbox{13}\dbox{23}\dbox{20}\dbox{43}
+&\wbox{63}\dbox{28}\dbox{08}\dbox{00}
+&\wbox{68}\dbox{32}\dbox{00}\dbox{00}
+&\wbox{83}\dbox{15}\dbox{02}\dbox{00}
+\\
+isbsg10
+&\dbox{12}\dbox{35}\dbox{28}\dbox{25}
+&\wbox{57}\dbox{33}\dbox{08}\dbox{00}
+&\dbox{47}\dbox{23}\dbox{15}\dbox{15}
+&\wbox{60}\dbox{27}\dbox{10}\dbox{03}
+\\
+finnish
+&\dbox{07}\dbox{03}\dbox{27}\wbox{63}
+&\dbox{32}\wbox{56}\dbox{12}\dbox{00}
+&\wbox{73}\dbox{18}\dbox{05}\dbox{03}
+&\wbox{78}\dbox{17}\dbox{05}\dbox{00}
+\\
+miyazaki
+&\dbox{10}\dbox{22}\dbox{27}\dbox{40}
+&\dbox{31}\dbox{46}\dbox{20}\dbox{03}
+&\dbox{42}\dbox{24}\dbox{18}\dbox{16}
+&\wbox{78}\dbox{13}\dbox{07}\dbox{02}
+\\
+maxwell
+&\dbox{04}\dbox{16}\dbox{40}\dbox{40}
+&\dbox{18}\wbox{60}\dbox{20}\dbox{02}
+&\dbox{44}\dbox{27}\dbox{17}\dbox{12}
+&\wbox{50}\dbox{33}\dbox{14}\dbox{04}
+\\
 desharnais
-&\dbox{17}\dbox{21}\dbox{40}\dbox{22} 
-&\dbox{24}\dbox{18}\dbox{26}\dbox{32} 
-&\dbox{32}\dbox{29}\dbox{18}\dbox{21} 
-&\dbox{40}\dbox{38}\dbox{19}\dbox{03}\\ 
-
+&\dbox{25}\dbox{23}\dbox{27}\dbox{25}
+&\dbox{40}\dbox{46}\dbox{11}\dbox{02}
+&\dbox{36}\dbox{26}\dbox{13}\dbox{25}
+&\dbox{32}\dbox{26}\dbox{24}\dbox{19}
+\\
 kitchenham
-&\dbox{02}\dbox{17}\dbox{33}\dbox{48} 
-&\dbox{27}\dbox{25}\dbox{21}\dbox{27} 
-&\dbox{32}\dbox{28}\dbox{21}\dbox{19} 
-&\wbox{56}\dbox{28}\dbox{09}\dbox{07}\\ 
-
-china 
-&\dbox{00}\dbox{07}\dbox{37}\wbox{56} 
-&\dbox{12}\dbox{32}\dbox{30}\dbox{26} 
-&\dbox{49}\dbox{32}\dbox{14}\dbox{05} 
-&\wbox{79}\dbox{20}\dbox{01}\dbox{00}\\ 
-
-
+&\dbox{01}\dbox{12}\dbox{32}\wbox{56}
+&\dbox{03}\dbox{42}\dbox{45}\dbox{10}
+&\dbox{43}\dbox{30}\dbox{17}\dbox{10}
+&\dbox{48}\dbox{35}\dbox{12}\dbox{04}
+\\
+china
+&\dbox{00}\dbox{04}\dbox{25}\wbox{71}
+&\dbox{00}\dbox{00}\dbox{25}\wbox{75}
+&\wbox{56}\dbox{30}\dbox{10}\dbox{02}
+&\wbox{68}\dbox{28}\dbox{04}\dbox{00}
+\\\hline
 
 
 
 \end{tabular}
 
-\vspace{3mm}
+\vspace{6mm}
   
+
+
+
 KEY: \colorbox{black!10}{\bf 10}\colorbox{black!20}{\bf 20}\colorbox{black!30}{\bf 30}\colorbox{black!40}{\bf 40}\colorbox{black!50}{\bf \textcolor{white}{50}}\colorbox{black!60}{\bf \textcolor{white}{60}}\colorbox{black!70}{\bf \textcolor{white}{70}}\colorbox{black!80}{\bf \textcolor{white}{80}}\colorbox{black!90}{\bf \textcolor{white}{90}}\colorbox{black}{\bf \textcolor{white}{100}}\%
 
 \end{center}

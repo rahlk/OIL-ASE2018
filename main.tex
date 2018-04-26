@@ -1,10 +1,10 @@
   % its not what learner is best,
 % but what tuner is best
 
-% COGEE results are quirky
+% CoGEE results are quirky
 % but very quirky
 
-% cogee slow. not a good candidate for tuning. we are hyperyhyper parmater.
+% CoGEE slow. not a good candidate for tuning. we are hyperyhyper parmater.
 
 % on the benefits of hyperparameter optimization for software effort estiamtionhttps://www.sharelatex.com/8956978261xpxppstbtcyp
  
@@ -12,6 +12,9 @@
 \usepackage{amssymb}
 \setcounter{tocdepth}{3}
 \usepackage{cite}
+
+\usepackage{enumitem}
+ 
 
 \usepackage{rotate}
 \usepackage{graphicx}
@@ -63,8 +66,9 @@
 \end{picture}
 }
 
-
-
+\newcommand{\ofr} {
+{\textit{out-of-range}}
+}
 
 
 \usepackage[framemethod=tikz]{mdframed}
@@ -78,9 +82,16 @@ shadow=false
 ]{myshadowbox}
 
 \newenvironment{result}[2]
-{\begin{myshadowbox}\textbf{\textit{\underline{Result#1:}}} #2}{ 
+{\begin{myshadowbox}\textbf{\textit{\underline{Lesson#1:}}} #2}{ 
 \end{myshadowbox}}
     
+\newcommand{\nm}[1]{\hline\multicolumn{1}{c}{\cellcolor{black} { {\bf \textcolor{white}{#1}}}}}
+%\pdfoutput=1
+
+
+
+
+
 \begin{document}
 
 % \begin{center}
@@ -91,15 +102,15 @@ shadow=false
 \pagestyle{plain}
 \thispagestyle{empty}
 \title{Hyperparameter Optimization  for    Effort Estimation}
-\author{\IEEEauthorblockN{
-Tianpei Xia, Jianfeng Chen, George Mathew, Xipeng Shen, Tim Menzies}
-\IEEEauthorblockA{Comptuer Science, North Carolina State University, USA}}
-%\institute{blinded}
-\author{\IEEEauthorblockN{Tianpei Xia, Rahul Krishna,
-Jianfeng Chen, George Mathew, Xipeng Shen and
-Tim Menzies}
-\IEEEauthorblockA{Comptuer Science, North Carolina State University, USA\\
-\url{{txia4,rkrish11,jchen37,george2,xshen5}@ncsu.edu, timm@ieee.org}}}
+% \author{\IEEEauthorblockN{
+% Tianpei Xia, Jianfeng Chen, George Mathew, Xipeng Shen, Tim Menzies}
+% \IEEEauthorblockA{Comptuer Science, North Carolina State University, USA}}
+% %\institute{blinded}
+% \author{\IEEEauthorblockN{Tianpei Xia, Rahul Krishna,
+% Jianfeng Chen, George Mathew, Xipeng Shen and
+% Tim Menzies}
+% \IEEEauthorblockA{Comptuer Science, North Carolina State University, USA\\
+% \url{{txia4,rkrish11,jchen37,george2,xshen5}@ncsu.edu, timm@ieee.org}}}
 
 \maketitle
 
@@ -124,31 +135,34 @@ Tim Menzies}
 Software analytics has  been widely used in software engineering for many tasks such as 
 generating effort estimates for  software projects.
 One 
-of the ``black arts'' of software analytics is  tunings the {\em parameters}
+of the ``black arts'' of software analytics is  tunings the  parameters
 controlling a  data mining algorithm.
-This paper seeks simple, automatic, and   effective methods for finding those tunings for software effort estimation.
+Such hyperparameter optimization has been widely studied in other software analytics domains
+(e.g. defect prediction and text mining) but, so far, has not been extensively explored for effort
+estimation.
+Accordingly, this paper seeks simple, automatic,     effective and fast methods
+for finding good  tunings for  automatic software effort estimation.
 
-We introduce a   tuning method 
-called DOIL  (Differential evolution Optimized Inductive Learning). 
-When tested on  945 projects, DOIL
-  performed  better than 
-other methods that are 
- either prominent or widely-used 
-(kth-nearest neighbor; regression trees;   and  two
-recent    methods: Whigham {\it et al.}'s ATLM method from TOSEM'15
-and Sarro {\it et al.}'s
-   COGEE method from ICSE'16). 
+We introduce a   hyperparameter optimization architecture called
+  OIL  (Optimized Inductive Learning). 
+  We test OIL  on a wide range of hyperparameter optimizers using  
+  data from 945 software projects. After tuning,
+  large improvements in effort estimation accuracy were observed
+  (measured in terms of the magnitude of the relative error and standardized accuracy).
+  
+  From those results, we can (a)~recommend
+  two
+  very fast hyperparamter optimizers 
+  and (b)~deprecated many other effort estimation methods.
+  Specifically, we will recommend regression trees (CART) tuned by either different evolution or  MOEA/D.
+ 
    
-   DOIL finds new tuning via a simple and relatively fast
-   search-based software engineering method called differential evolution.
-On investigation, we found no clear improvement  using more
-   elaborate (and much slower) methods such as  {\em hyperparameter} optimization with NSGA-II or MOEA/D.
-Hence we recommend  DOIL   for effort estimation.
-At the very least, DOIL could be used as a  baseline method for
-any subsequent study of {\em hyperparameter} optimization in effort estimation.
+An important part of this analysis is its reproducability and refutability. All our scripts
+and data are on-line. It is hoped that this paper will prompt and enable much more research on better methods
+to tune software effort estimators.
 \end{abstract}
 \begin{IEEEkeywords}
-Effort Estimation, Analogy, Evolutionary algorithms, Differential evolution
+Effort Estimation, Analogy, Evolutionary algorithms
 \end{IEEEkeywords}
  
 
@@ -169,142 +183,147 @@ Non-algorithm techniques that rely on human judgment~\cite{jorgensen2004review} 
 audit or 
 dispute (e.g.,  when the estimate is generated by a senior colleague but disputed by others). 
 
+Sarro et al.~\cite{sarro2016multi} assert that effort  estimation  is  a  critical  activity  for  planning  and
+monitoring software project development in order to deliver
+the  product  on  time  and  within  budget~\cite{briand2002resource,kocaguneli2011experiences,trendowicz2014software}.   The
+competitiveness (and occasionally the survival) of software
+organizations depends on their ability to accurately predict
+the  effort  required  for  developing  software  systems;  both
+over- or under-estimates can negatively affect the outcome
+of software projects~\cite{mcconnell2006software,mendes2002further,sommerville2010software,trendowicz2014software}
+
+
 
 {\em Hyperparameter} optimization  is the automatic tuning
 of the control parameters of a data
 mining algorithm.
 It is well established that  classification tasks like software defect prediction or 
  text classification can be dramatically improved by such tuning~\cite{Fu2016TuningFS,tanti18,thornton2013auto,AGRAWAL2018,agrawal2017better}.
-But the benefits of   {\em hyperparameter} optimization for   effort estimation has not been extensively
-studies since those studies~\cite{dejaeger12,Moeyersoms:2015,li09,ekrem09,singh2012software,aljahdali2010software,Song:2013,IJST70010,Rao14,Khatibi13} suffer from  numerous
-limitations such as   restrictive assumptions on  the {\em attributes} used in the data; limited exploration
-of the parameter space; testing on very few data sets;
-using optimiziers that are     deprecated  in the literature~\cite{Bergstra:2012};
-and not benachmarking those results against widely used or prominent recent methods.
+But as discussed below (see  \S\ref{sbse}), the  benefits of     hyperparameter optimization for   effort estimation 
+have not been extensively
+studied.  Accordingly, this paper investigates hyperparameter optimization using a wide
+range of estimation methods and optimization methods, using data from 945 software projects.
+ 
 
-Accordingly, this paper conducts a  more thorough investigation of {\em hyperparameter} optimization for effort estimation. Here, we  distinguish between 
-data {\em features} and {\em parameters} in the algorithms
-that convert the data to a model.
-In our study:
-\bi
-\item
-We  use methods with no   data
-{\em feature} assumptions;
-\item
-That
- vary
-many {\em parameters} (6000+ combinations);
-\item
-That also  tests  results   on 9 different sources with data on 965 software projects; 
-\item
-Which  uses optimizers   representative of the  state-of-the-art 
-(NSGA-II~\cite{deb02}, MOEA/D~\cite{Zhang07}, DE~\cite{storn1997differential});
-\item
-Which 
-benchmark results 
-against widely-used or prominent methods (standard kth-nearest neighbor;  regression trees;
-  Whigham et al.'s ATLM method from TOSEM'15~\cite{Whigham:2015}; Sarro et al.'s genetic programming
- method called COGEE from ICSE'16~\cite{sarro2016multi}).
-\ei
+
 The results of this investigation are assessed   with respect to recent comments by 
-Acuri \& Fraser~\cite{Arcuri2013} on the {\em value} of {\em hyperparameters} optimization.
+Acuri \& Fraser~\cite{Arcuri2013} on the    value  of hyperparameter optimization.
 They caution that to transition such optimizers  to industry, then they need to be {\bf  fast}:
 \begin{quote}
 {\em To entail technology transfer to industrial practice, {\em parameters} tuning is a task of responsibility of who develops and releases search-based tools.
 A practitioner, that wants to use such tools, should not be required to run large tuning phases before being able to apply those tools on (their) problems at hand~\cite{Arcuri2013}.}
 \end{quote}
-Also,  optimizers must  be {\bf  more effective than the defaults}:
-
+Also,  optimizers must  be {\bf useful}:
 \begin{quote}
 {\em At least in the context of test data generation, (tuning) does not seem easy to find good settings that significantly outperform   ``default'' {\em values}. ... Using ``default'' {\em values} is a reasonable and justified choice, whereas {\em parameters} tuning is a long and expensive process that might or might not pay off in the end~\cite{Arcuri2013}.}
 \end{quote}
-The experiments of this paper show that, contrary to Acuri \& Fraser's experience with tuning test generation tools:
-\begin{result}{1}
-For effort estimation, {\em hyperparameters} optimization  with differential evolution\cite{storn1997differential}  is {\bf more effective than  default settings}. 
-\end{result}
-(Later in this paper, we describe differential evolution (or DE), in detail.)
-During this study, we noted that : 
-\begin{result}{2}
-The most {\bf effective} {\em hyperparameters} optimizations varies extensively from data set to data set.
-\end{result}
+The experiments of this paper show that,  contrary to Acuri \& Fraser's experiences with test generation,
+using the defaults for effort estimation leads to far worse estimates that using
+tunings learned by
+hyperparameter optimization.
+
+
+We will also show that the most effective tunings found in this way
+  vary extensively from data set to data set.
 This means that  such optimizations have to be repeated for each new data set. Hence, it is important
-to reply to  Acuri \& Fraser's concerns about {\em parameters} tuning being
-``a long and expensive process''. Fortuneately, we find that:
+to reply to  Acuri \& Fraser's concerns about parameters tuning being
+``a long and expensive process''. Certainly, some of our the methods studied here are  slow and would take  164 hours of CPU time (nearly a week) to terminate. Fortunately, the methods we will recommend
+terminate in under 2 hours (on a standard 2GHz desktop machine with 8GB of RAM). 
 
-\begin{result}{3}
-~{\em Hyperparameters} optimization  with differential evolution  is {\bf fast} (less than a minute per data set).
-\end{result}
+%XXXX effor 
+%%%%% dejaeger12  Moeyersoms:2015 grid search
+% li09 : ga tun tine weights on columsna dn rows. very slow.
+%XXXXX endmeble, no local tuning ekrem09 
+%XXXX GA, one data set. singh2012software
+%XXXX de, one data set aljahdali2010software
+%XXX grid, 3 data sets Song:2013
+% 1 data set , bee colony optimization, tuning cocomo IJST70010
+% XXX pso, 1 data set Rao14
+% CCCC pso, 3 data set Khatibi13
+% none of the above compares withr ecent highwater mark publications
 
-Here, we define  ``fast'' using the   standard industrial timekeeping
-systems which we have studied~\cite{Menzies2016AreDI}. In those systems, time spans less than one minute
-are rarely tracked. Hence, developers would not have to notify or negotiate with   managers about running
-our {\em hyperparameters} optimizers.
-
-One natural extension to the above results
- is to ask  if we can do better by swapping
- differential evolution with other {\em hyperparameters} optimizers
- (e.g.   NSGA-II~\cite{deb02}, MOEA/D~\cite{Zhang07}).
- When we tried that, we found even after days of CPU time, we still cannot   decide  which optimizer is ``best''.
-To explain this result, we note that  we were trying
-to satisfy an elaborate set
-goals for our optimizers; i.e. $G_1=$~works well for  most data sets,  $G_2=$~performs well on multiple evaluation, $G_3=$~does
-not take hours to terminate,  $G_4=$~performs better than N other optimizer.
-From the multi-objective optimization literature, it is well established
-that the more goals $G_i$  that are explored,
-the harder in becomes for any one thing to consistently out-perform any other thing~\cite{sayyad2013value,Wagner:2007}.
-Hence  we advise that, in future,  researcher avoid  overly-elaborate {\em hyperparameters} optimization studies since:
-\begin{result}{4}
-If a  
- {\em hyperparameters} optimization study is too elaborate (i.e. has too many goals),  it becomes hard to demonstrate that one optimizer is 
- more {\bf effective} than any other.  
- \end{result}
+% \begin{table*}[!t]
+% \caption{CART's parameters.}\label{tbl:cart}
+% \footnoteisze
+% \begin{center}
+% \begin{tabular}{r|c|c|p{3.2in}}
 
 
-XXXThe rest of this paper is structured as follows.
-The next section describes the overall motivation of this work.
-Next, effort estimation is discussed and we  introduce DOIL
-(short for   Differential evolution Optimized Inductive Learning) that is based on DE (differential
-evolution~\cite{storn1997differential}).
-%  (DOIL is short for 
-% {\em \underline{o}pt\underline{i}mized 
-%      \underline{l}earning}).
-This is followed by an empirical study where estimates for 945 software projects are generated using
-a variety of methods including DOIL.
-Given its good performance in those comparisons, and its relatively
-fast runtimes, 
-   we
-recommend  DOIL  for  effort  estimation.  At  the  very  least,
-DOIL could be used as a baseline method for any subsequent
-study  of  {\em hyperparameters}  optimization  in  effort  estimation
+% Parameter & Default & Tuning range & Notes\\\hline 
+
+% max\_feature & None &[0.01,1]& The number of {\em features} to consider when looking for the best split. \\\hline
+
+% max\_depth & None & [1, 12]& The max depth of the tree. \\ \hline
+
+% min\_sample\_split & 2 &[2,20]& The min number of samples required to split an internal node. \\ \hline
+
+% min\_samples\_leaf & 1 & [1,12]&The min number of samples required to be at a leaf node. 
+
+% \end{tabular}  
+% \end{center}
+% \end{table*}
+
+\begin{table*}[!t]
+\centering
+\caption{CART's parameters.}\label{tbl:cart}
+\begin{tabular}{r|c|c|p{3.2in}}
+Parameter          & Default & Tuning Range  & Notes                                                            \\\hline
+max\_feature       & None    & {[}0.01, 1{]} & The number of feature to consider when looking for the best split. \\\hline 
+max\_depth         & None    & {[}1, 12{]}   & The maximum depth of the tree.                                     \\\hline 
+min\_sample\_split & 2       & {[}0, 20{]}   & The minimum number of samples required to split an internal node.  \\\hline 
+min\_samples\_leaf & 1       & {[}1, 12{]}   & The minimum number of samples required to be at a leaf node.      
+\end{tabular}
+\end{table*}
+
+
+
+
+
+Overall the contributions of this paper are:
+\bi
+\item An extensible open-source architecture called OIL that supports the experiments of this paper,
+as well as extensions to other experiments. OIL makes the results of this paper repeatable and refutable.
+\item
+To the best of our knowledge, the largest study yet undertaken of hyperparamter optimization and effort estimation. Prior studies in this arena~\cite{dejaeger12,Moeyersoms:2015,li09,ekrem09,singh2012software,aljahdali2010software,Song:2013,IJST70010,Rao14,Khatibi13} suffered  from  numerous  limitations  such  as
+restrictive  assumptions  on  the
+attributes
+used  in  the  data;
+limited  exploration  of  the  parameter  space;  testing  on  very
+few  data  sets;  using  optimiziers  that  are  deprecated  in  the
+literature;  and  not  benchmarking those  results  against
+widely used or prominent recent methods.
+\item A demonstration that defaults settings are not the best way to perform effort estimation.
+\item The identification of two hyperparameter optimizers that are recommended for effort estimation.
+ \item The identification of numerous other effort estimation methods that should be deprecated.
+\ei
+The rest of this paper is structured as follows.
+The next section discusses different methods for effort estimation and how to optimize
+the parameters of effort estimation methods. This is followed by a description of our data, our experimental
+methods, and our results. After that, a discussion section explores open issues with this work. 
+
+Our conclusion will be that  while Acuri \& Fraser's pessimism about hyperparameter optimization  applies to their
+test data generation domain, there exists other domains (e.g. effort estimation) where hyperparamter optimization is both fast and useful.
+It is hoped that OIL, and the results of  this paper,  will prompt and enable much more research on better methods
+to tune software effort estimators.
 
 
 \section{About Effort Estimation} 
 Software effort estimation is the process of predicting the most realistic amount of human effort (usually expressed in terms of hours, days or months of human work) required to plan, design and develop a software project based on the information collected in previous related software projects.
-
-Sarro et al.~\cite{sarro2016multi} assert that effort  estimation  is  a  critical  activity  for  planning  and
-monitoring software project development in order to deliver
-the  product  on  time  and  within  budget  [9,  51,  88].   The
-competitiveness (and occasionally the survival) of software
-organizations depends on their ability to accurately predict
-the  effort  required  for  developing  software  systems;  both
-over- or under-estimates can negatively affect the outcome
-of software projects [59, 63, 84, 88]
-
-As shown below, effort estimation divide into human-based techniques and algorithm-based techniques~\cite{teak2012,shepperd2007software}.
+As shown below, effort estimation techniques can be divided   into human-based  and algorithm-based~\cite{teak2012,shepperd2007software}.
 
 \subsection{Human-based Methods}
 
 There  are many human-based estimations methods~\cite{Jorgensen2004} including methods for agile projects such as planning poker~\cite{molokk08} where participants offer anonymous “bids” on the completion time for a project. When bids are widely divergent, factors leading to that disgreement are elaborated and debated. This cycle of bid+discuss repeats until a consensus
 is reached.
 
-It should be noted that  planning poker is
-used to incrementally assess effort for particular tasks in the scrum backlog.
-This is a  different and simpler task than the
-initial
-estimation of software projects. This is an important issue since
-the initial budget allocation may require a significant amount of intra-organizational lobbying between groups with competing concerns (this is particularly true for larger projects). 
-Since it can be challenging to change such initial budget allocations, it is important
-to get the initial estimate as accurate as possible.
+% It should be noted that  planning poker is
+% used to incrementally assess effort for particular tasks in the scrum backlog.
+% This is a  different and simpler task than the
+% initial
+% estimation of software projects. This is an important issue since
+% the initial budget allocation may require a significant amount of intra-organizational lobbying between groups with competing concerns (this is particularly true for larger projects). 
+% Since it can be challenging to change such initial budget allocations, it is important
+% to get the initial estimate as accurate as possible.
 
 For several reasons, this paper does not explore human-based  estimation methods.
 Firstly,   it is known that humans rarely update their human-based estimation knowledge
@@ -320,12 +339,6 @@ uncertainty
 about particular estimates.
 
 \subsection{Algorithm-based Methods}
-
-\begin{figure*}[!t]
-\centerline{\includegraphics[width=.8\textwidth]{FTM.pdf}}
-\caption{DOIL's feature model of the space of machine learning options for ABEN.  In this model, $\mathit{Subset Selection}$, $\mathit{Similarity}$, $\mathit{Adaption Mechanism}$ and $\mathit{Analogy Selection}$ are the mandatory {\em features}, while the $\mathit{Feature Weighting}$ and $\mathit{Discretization Method}$ {\em features} are optimal. To avoid making the graph too complex, some cross-tree constrains are not presented.}    
-\label{fig:featuretree}
-\end{figure*}
 
 % Software effort estimation has been extensively
 % studied in the SE literature:
@@ -350,53 +363,39 @@ about particular estimates.
 % cloud compute facilities, our experiments   took 16 hours to complete.
 %XXX need to mveo this to intro,,someehow
 
- Whigham et al.'s ATLM method from TOSEM'15 is an example of an algorithm-based automatic effort estimation method~\cite{Whigham:2015}. ATLM is a multiple linear regression model which calculate the effort as $\mathit{effort} = \beta_0 + \sum_i\beta_i\times a_{i} +  \varepsilon_i$,  where $a_i$ are explanatory {\em attributes} and $\varepsilon_i$ are errors to the actual {\em value}. The prediction weights $\beta_i$ are determined using a least square error estimation~\cite{neter1996applied}.
+ Whigham et al.'s ATLM method from TOSEM'15 is an example of an algorithm-based automatic effort estimation method~\cite{Whigham:2015}. ATLM is a multiple linear regression model which calculate the effort as $\mathit{effort} = \beta_0 + \sum_i\beta_i\times a_{i} +  \varepsilon_i$,  where $a_i$ are explanatory {\em attributes} and $\varepsilon_i$ are errors to the actual {\em value}. The prediction weights $\beta_i$ are determined using a least square error estimation~\cite{neter1996applied}. Additionally, transformations are applied on the attributes to further minimize the error in the model. In case of categorical attributes the standard contrasts approach of ``dummy variables"~\cite{hardy1993regression} is applied. While, for continuous attributes, transformations such as logarithmic, square root,  or no transformation is employed such that the skewness of the attribute is minimum. It should be noted that, ATLM does not consider relatively complex techniques like using model residuals,  box transformations or step-wise regression (which are standard) when developing a linear regression model. The authors make this decision since they intend ATLM to be a simple baseline model rather than the ``best" model.
 
 
 Apart from ATLM, there are many more algorithmic estimation methods. Some, such as COCOMO~\cite{boehm1981software}, make assumptions
-about the {\em attributes} in the model. For example, COCOMO requires that the
-data include 22 specific {\em attributes} such as analyst capability (acap) and software complexity (cplx).  This {\em attribute} assumptions restrict the number
-of data sets that can be processed by these kinds of models. For example,
-this study explore 965 projects expressed in terms of a wide range of {\em attributes}.  If we used COCOMO, we could only access an order of magnitude   fewer projects.
+about the  attributes in the model. For example, COCOMO requires that the
+data include 22 specific   attributes such as analyst capability (acap) and software complexity (cplx).  This   attribute
+assumptions restrict the number
+of data sets that can be processed by studies like this paper. For example,
+this study explore 965 projects expressed using a  wide range of  attributes.  If we used COCOMO, we could only access an order of magnitude   fewer projects.
 
-Methods like Sarro et al.'s COGEE~\cite{sarro2016multi} addresses
-the problem of {\em attribute} assumptions. COGEE in a genetic program
-that mutates a model $\mathit{effort} = \beta_1 \mathit{op}_1 a_1  ... \beta_{1n} \mathit{op}_{2n-1} a_n  \mathit{op}_{2n} \beta_0$ 
+Sarro et al.'s CoGEE~\cite{sarro2016multi} addresses
+the problem of  attribute assumptions. CoGEE in a genetic program
+that mutates: \[\mathit{effort} = \beta_1 \mathit{op}_1 a_1  ... \beta_{1n} \mathit{op}_{2n-1} a_n  \mathit{op}_{2n} \beta_0\]
 where $a_i$ is an {\em attribute} {\em value} for a project,  $\beta_i \in R$ are weighting numbers and
 \mbox{$\mathit{op_i}\in \{+,-,*\}$}. Note that while methods like COCOMO require $a_i$ to be from some reserved set, 
-COGEE will accept data with any {\em attributes}.
+CoGEE will accept data with any {\em attributes}.
 
 
 
 
-Another kind of algorithm-based estimation method are regression trees methods like CART~\cite{brieman84}.  
+Another kind of algorithm-based estimation method are regression trees such as   CART~\cite{brieman84}.  
 CART is a  tree learner that divides a data set, then recurses
 on each split.
 If data contains more than {\em min\_sample\_split}, then a split is attempted.
 On the other hand, if a split contains no more than {\em min\_samples\_leaf}, then the recursion stops. 
-CART finds the {\em attributes} whose ranges contain rows with least variance in the number
-of defects. If an {\em attribute} ranges $r_i$ is found in 
-$n_i$ rows each with a  defect count variance of $v_i$, then CART seeks the {\em attributes}
-whose ranges minimizes $\sum_i \left(\sqrt{v_i}\times n_i/(\sum_i n_i)\right)$.
+CART finds the attributes whose ranges contain rows with least variance in the number
+of defects. If an  attribute ranges $r_i$ is found in 
+$n_i$ rows each with an effort  variance of $v_i$, then CART seeks the  attribute with a split that most
+minimizes $\sum_i \left(\sqrt{v_i}\times n_i/(\sum_i n_i)\right)$.
 For more details on the CART {\em parameters}, see Table~\ref{tbl:cart}.
 
 
-\begin{table}[!t]
-\scriptsize
-\caption{CART's {\em parameters}.}\label{tbl:cart}
-\begin{tabular}{rlcp{1.3in}}
 
-Parameter & Default & Tuning range & Notes\\\hline 
-
-	  max\_feature & None &[0.01,1]& The number of {\em features} to consider when looking for the best 
-split. \\\hline
-	 min\_sample\_split & 2 &[2,20]& The minimum number of samples required to split an 
-internal node. \\ \hline
-  min\_samples\_leaf & 1 & [1,20]&The minimum number of samples required to be at a leaf 
-node. \\ \hline
-     max\_depth & None & [1, 50]& The maximum depth of the tree. 
-\end{tabular}  
-\end{table}
 
 
 %It can be generated using an algorithmic approach or via induced prediction systems. In the former, a senior expert proposes a general model, then use domain data to tune that model to specific projects. For example, a model named COCOMO created by Boehm~\cite{boehm1981software} hypothesized that the software development effort was exponential on LOC and linear on 15 effort multipliers such as analyst capability, product complexity, etc. Boehm defined a local calibration procedure to tune the COCOMO model to local data. If the available local training data does not conform to the requirements of a pre-defined algorithmic model like COCOMO, then the later one, induced prediction systems are useful. There are many induction methods, including linear regression, neural nets, and analogy, etc. However, all of these induction systems require a bias in order to decide what details can be safely ignored. When data violates these assumptions, finding a suitable patch could be difficult without an experienced expert.
@@ -409,18 +408,18 @@ node. \\ \hline
 % \bi
 % \item XXX
 % {\bf RQ1: Can effort estimation ignore SBSE? That is, is tuning avoidable since  just a few options are typically ``best''?} 
-% We will find that the ``best'' effort estimation method is highly variable.   That is, tools like DOIL are important for
+% We will find that the ``best'' effort estimation method is highly variable.   That is, tools like OIL are important for
 % ensuring that the right estimators are being applied to the current data set.
 % \item
 % {\bf RQ2: Pragmatically speaking, is SBSE too hard to apply to effort estimation?}
 % As shown below, 
-% a few dozen evaluations of DOIL are enough to  explore  
+% a few dozen evaluations of OIL are enough to  explore  
 % configuration options for   effort estimation. That is, it is hardly arduous to apply SBSE to effort
 % estimation. Even on a standard single core machine, the median
 % time to explore all those options is just  a few minutes.
 % \item
 % {\bf RQ3: Does SBSE    estimate better than widely-used effort estimation methods?}
-% As shown below, the  estimations from DOIL perform much  better than  standard effort estimation methods, including   ATLM. 
+% As shown below, the  estimations from OIL perform much  better than  standard effort estimation methods, including   ATLM. 
 % \ei
 
 
@@ -496,34 +495,34 @@ node. \\ \hline
 % %We use two different measurements methods (MRE and SA) to evaluate the performance of DE tuned ABE approach.
 % %\item {\bf RQ 2: How do we compare our methods with established baseline (like Whigham's ATLM) in software literature?}
 % %We use plot graph to show the MRE/SA difference between baseline and our method. 
-% \item {\bf RQ 1: Does DOIL tuning perform better than   random sampling?}
+% \item {\bf RQ 1: Does OIL tuning perform better than   random sampling?}
 % Methodologically,  SBSE methods should be compared
 % against  uninformed random search~\cite{nair18}.
 % \item {\bf RQ 2: Are the required runtimes for   SBSE  effort estimation very  slow?}
 % This questions checks the overhead for applying SBSE to effort estimation.
 % %\item {\bf RQ 5: Can SBSE simplify effort estimation?}
 % %The results of our experiments suggest that DE tuning simplify effort estimation by proving better performance within same or less running time.
-% \item {\bf RQ 3: Are    DOIL's results better
+% \item {\bf RQ 3: Are    OIL's results better
 % than accepted practice 
 % in effort estimation?}
 % For this research question, we compare our results against ABE0
 % and ATLM, two standard
 % methods in effort estimation.
 % \item {\bf RQ 4: Do different datasets require different tunings?}
-% If  all datasets required the same tunings, then DOIL would  be superfluous since there would be no
+% If  all datasets required the same tunings, then OIL would  be superfluous since there would be no
 % need to apply SBSE to every new data set. 
 % \ei
-% The rest of this paper is structured as follows.  Section~\tion{background} describes background and related work. How important the effort estimation is and what kinds of techniques have been used. Explains the concept of ABE and introduces how DOIL
+% The rest of this paper is structured as follows.  Section~\tion{background} describes background and related work. How important the effort estimation is and what kinds of techniques have been used. Explains the concept of ABE and introduces how OIL
 % to explore different configurations of effort estimators. Section~\tion{study} describes the effort dataset used by this paper, performance metrics and benchmark of the experiments. Section~\tion{results} presents the results of experiments and answers the above questions. Section~\tion{threats} discusses the potential issues and limitations of the our methods. 
 % Section~\tion{discussion} and
 % Section~\tion{conclusion} discuss our results and propose   future work.
  
-%  Note that this is the first paper to introduce DOIL. Also,  the scripts and data used in this paper are available on-line at (url hidden for double-blind review).
+%  Note that this is the first paper to introduce OIL. Also,  the scripts and data used in this paper are available on-line at (url hidden for double-blind review).
  
 
 
 Yet another algorithm-based estimator are the 
-analogy-based Estimation (ABE) methods explored by Shepperd and Schofield  in 1997~\cite{shepperd1997estimating}. ABE is widely-used~\cite{7194627,Kocaguneli2015,7426628,6092574,MenziesNeg:2017}, in many forms.
+analogy-based Estimation (ABE) methods advocted by Shepperd and Schofield~\cite{shepperd1997estimating}. ABE is widely-used~\cite{7194627,Kocaguneli2015,7426628,6092574,MenziesNeg:2017}, in many forms.
 We  say that  ``ABE0'' is the standard  form  seen in the literature
 and ``ABEN'' are the 6,000+ variants of ABE  defined below. 
 The general form of ABE (which applies to  ABE0 or ABEN) is
@@ -535,135 +534,192 @@ Before calculating similarity,  ABE normalizes   numerics  min..max to 0..1 (so 
 Them ABE uses {\em feature} weighting to reduce the influence of less informative {\em features}.
 Finally, some  {\em adaption strategy} is applied  return some combination of  the dependent effort {\em values} seen in  the $k$ nearest analogies.
 
-To measure    similarity between examples $x,y$, 
-ABE uses $\sqrt{\sum_{i=1}^n w_i(x_i-y_i)^2}$ where $i$ ranges
-over all the independent variables. In this equation, $w_i$ corresponds to {\em feature} weights applied to independent {\em features}. For ABE0, we use a uniform weighting, therefore $w_i=1$.
-Also,
-the {\em adaptation strategy} for ABE0 is to return the  effort {\em values} of the $k=1$ nearest analogies.
-The rest of this section describes 6,000+ variants of ABE that we call ABEN. For an overview of those methods, see Figure~\ref{fig:featuretree}.
+For  details on ABE0 and ABEN, see \fig{featuretree} \& Table~\ref{tbl:aben}. 
 
 
 
+
+
+\begin{table}[!t]
+\caption{Variations on analogy. 
+ Visualized in
+\fig{featuretree}.}\label{tbl:aben}
+
+\begin{tabular}{|p{.94\linewidth}|}\hline
+
+\begin{itemize}[leftmargin=0.1in]
+\item
+To measure    similarity between  $x,y$, 
+ABE uses $\sqrt{\sum_{i=1}^n w_i(x_i-y_i)^2}$ where  $w_i$ corresponds to {\em feature} weights applied to independent {\em features}. ABEO0 uses a uniform weighting where $w_i=1$.
+ABE0's {\em adaptation strategy} is to return the  effort   of the nearest $k=1$   item.
+\item
 {\em Two ways to find training subsets}:
 (a) Remove nothing: Usually, effort estimators use all training projects~\cite{chang1974finding}. Our ABE0 is using this variant;
 (b) Outlier methods: prune training projects with (say) suspiciously large {\em values}~\cite{keung2008analogy}. Typically, this removes a small percentage of the training data.
-
+\item
 {\em Eight ways to make feature weighting}:
-Li {\it et al.}~\cite{li2009study} and Hall and Holmes~\cite{hall2003benchmarking} review eight different {\em feature} weighting schemes. Li {\it et al.} use a genetic algorithm to learn useful {\em feature} weights. Hall and Holmes review a variety of methods ranging from WRAPPER to various filters methods, including their preferred correlation-based method. Note that their methods assume symbolic, not numeric, dependent variables. Hence, to apply these methods we add a discretized   classes {\em columns}, using (max-min)/10.  Technical aside: when we compute the errors measures (see below), we       use  the raw numeric dependent {\em values}.
-
+Li {\it et al.}~\cite{li2009study} and Hall and Holmes~\cite{hall2003benchmarking} review 8 different {\em feature} weighting schemes.
+\item
 {\em Three ways to discretize} (summarize numeric ranges into a few bins):
 Some {\em feature} weighting schemes require an initial discretization of continuous {\em columns}. There are many discretization policies in the literature, including:
 (1)~equal frequency,
 (2)~equal width, 
 % (4)PKID~\cite{yang2002comparative},
 (3)~do nothing.
-
+\item
 {\em Six ways to choose similarity measurements:}
-Mendes {\it et al.}~\cite{mendes2003comparative} discuss three similarity measures, including the weighted Euclidean measure described above, an unweighted variant (where $w_i$ = 1), and a ``maximum distance'' measure that focuses on the single {\em feature} that maximizes interproject distance. Frank {\it et al.}~\cite{frank2002locally} offer a fourth similarity measure that uses a triangular distribution that sets to the weight to zero after the distance is more than ``k'' neighbors away from the test instance. A fifth and sixth similarity measure are the Minkowski distance measure used in~\cite{angelis2000simulation} and the mean {\em value} of the ranking of each project {\em feature} used in~\cite{walkerden1999empirical}.
-
+Mendes {\it et al.}~\cite{mendes2003comparative} discuss three similarity measures, including the weighted Euclidean measure described above, an unweighted variant (where $w_i$ = 1), and a ``maximum distance'' measure that focuses on the single {\em feature} that maximizes interproject distance. Frank {\it et al.}~\cite{frank2002locally} use a triangular distribution that sets to the weight to zero after the distance is more than ``k'' neighbors away from the test instance. A fifth and sixth similarity measure are the Minkowski distance measure used in~\cite{angelis2000simulation} and the mean {\em value} of the ranking of each project {\em feature} used in~\cite{walkerden1999empirical}.
+\item
 {\em Four ways for adaption mechanisms:} 
 (1)~median effort {\em value},
 (2)~mean dependent {\em value},
 (3)~summarize the adaptations via a second learner (e.g., linear regression)~\cite{li2009study,menzies2006selecting,baker2007hybrid,quinlan1992learning},
 (4)~weighted mean~\cite{mendes2003comparative}.
-
+\item
 {\em Six ways to select analogies:}
-Kocaguneli {\it et al.}~\cite{teak2012}   says analogies selectors  are  fixed or dynamic. Fixed methods use $k\in\{1,2,3,4,5\}$
+Analogy selectors  are  fixed or dynamic~\cite{teak2012}. Fixed methods use $k\in\{1,2,3,4,5\}$
 nearest neighbors
-while  dynamic methods use the training set to find which $1 \le k \le N-1$ is best for   $N$ examples.\\
+while  dynamic methods use the training set to find which $1 \le k \le N-1$ is best for   $N$ examples.
+\end{itemize}
+\\\hline
+\end{tabular}
+\end{table}
+
+\begin{figure*}[!t]
+\centerline{\includegraphics[width=.7\textwidth]{FTM.pdf}}
+\caption{OIL's feature model of the space of machine learning options for ABEN.  In this model, $\mathit{Subset Selection}$, $\mathit{Similarity}$, $\mathit{Adaption Mechanism}$ and $\mathit{Analogy Selection}$ are the mandatory {\em features}, while the $\mathit{Feature Weighting}$ and $\mathit{Discretization Method}$ {\em features} are optimal. To avoid making the graph too complex, some cross-tree constrains are not presented.}    
+\label{fig:featuretree}
+\end{figure*}
 
 
+\subsection{Effort Estimation and  Hyperparameter Optimization}\label{sbse}
 
-\subsection{DOIL}
 
-  Note that we do \underline{{\em not}} claim that the above represents all possible ways to perform effort estimation. Rather, we merely say that (a)~all the above are either prominent in the literature or widely used; and (b)~anyone  with knowledge of  the current effort estimation 
+Note that we do \underline{{\em not}} claim that the above represents all methods for  effort estimation. Rather, we  say that (a)~all the above are either prominent in the literature or widely used; and (b)~anyone  with knowledge of  the current effort estimation 
 literature would be tempted to try some of the above.
 
 While the above list is incomplete, it is certainly very long. Consider, for example, just the ABEN
-variants documented above. There are 
+variants documented in Table~\ref{tbl:aben}. There are 
 $2\times 8\times 3\times 6\times 4\times 6=6,912$ such variants.  Some   can be ignored;
-e.g. at $k=1$,     adaptation mechanisms return the same result, so they can be ignored. Also, not all  {\em feature} weighting techniques use discretization. But even after those discards, there are still thousands of possibilities to explore. 
+e.g. at $k=1$,     adaptation mechanisms return the same result, so they are not necessary. Also, not all  {\em feature} weighting techniques use discretization. But even after those discards, there are still thousands of possibilities. 
 
-DOIL is  our  controller for exploring these possibilities. For pragmatic engineering reasons,
-we elected to focus on ABEN (since this is one of the fastest learners we could access).
-Initially, our plan
-was to use standard {\em hyperparameter} tuning for this task. Then we learned that (a)~standard data mining toolkits like scikit-learn~\cite{pedregosa2011scikit} lacked 
-some of  ABEN variants; and (b) standard {\em hyperparameter} tuners can be  slow     (sklearn recommends a default runtime of 24 hours~\cite{sk18}).  Hence, we build DOIL,  implemented as a 
- layered architecture:
- \bi
- \item
-At the lowest {\em library layer}, DOIL uses   Python  Scikit-Learn~\cite{pedregosa2011scikit}. 
+Given the space to exploration is so large, some researchers have offered automatic support for that exploration.
+Some of that prior work suffered from being applied to limited data~\cite{li09} or optimizing
+with algorithms that are not representative of  the state-of-the-art in multi-objective optimization~\cite{li09}.
+
+Another issue with prior work is that researchers use methods that are widely deprecated in the literature. 
+For example,  grid search~\cite{dejaeger12,Song:2013}  is a set of
+nested for-loops that iterate over  a range of options.
+Grid search is very slow and, due to  the size of the increment in each for-loop, can miss important settings~\cite{Bergstra:2012}.
+
+Other researchers assume that the effort model is a specific parametric form (e.g. the COCOMO equation)
+and propose mutation methods to adjust the parameters of that equation~\cite{aljahdali2010software,Moeyersoms:2015,singh2012software,IJST70010,Rao14}. As mentioned above, this approach is
+hard to test since there are very few data sets using the   pre-specified COCOMO attributes. 
+
+Further, all that prior work needs to be revisited given the existance of recent and very prominent
+methods; i.e.  ATLM and CoGEE system.
+
+
+Accordingly, this paper conducts a  more thorough investigation of   hyperparameter  optimization for effort estimation. 
+In our study:
+\bi
 \item
-Above that, there is a {\em utilities layer} containing all the algorithms missing in Scikit-Learn (e.g., ABEN required
-numerous additions at the utilities layer). 
+We  use methods with no   data
+feature assumptions (i.e. no COCOMO data);
 \item
-Higher up, DOIL's {\em modelling layer} uses an XML-based domain-specific language to specify a {\em feature} map of data mining options.
-These feature models are single-parent and-or graphs with (optionally) cross-tree constraints showing what options require or exclude other options.
-A graphical representation of  the feature model used in this paper is shown in \fig{featuretree}.
+That
+ vary
+many   parameters (6000+ combinations);
 \item
-Finally, at top-most {\em optimizer layer}, there is some evolutionary optimizer that makes decisions across the {\em feature} map. An automatic {\em mapper} facility then links those decisions
-down to the lower layers to run the selected algorithms.  
+That also  tests  results   on 9 different sources with data on 965 software projects; 
+\item
+Which  uses optimizers   representative of the  state-of-the-art 
+(NSGA-II~\cite{deb02}, MOEA/D~\cite{Zhang07}, DE~\cite{storn1997differential});
+\item
+And which 
+benchmark results 
+against  prominent methods
+  ATLM method from TOSEM'15~\cite{Whigham:2015}; and CoGEE from ICSE'16~\cite{sarro2016multi}.
 \ei
-For this study, we optimize using the differential evolution method (DE~\cite{storn1997differential}), shown in \fig{DE}. 
-DE was selected since certain recent software analytics papers have reported that DE can be effective for text mining~\cite{AGRAWAL2018}
-and defect prediction~\cite{Fu2016TuningFS}.
+One issue we found with CoGEE was that there was no reference implementation 
+available for the CoGEE   home page\footnote{www0.cs.ucl.ac.uk/staff/F.Sarro/projects/CoGEE}. Hence, we   built our own   which
+raises the possibility that our ``CoGEE'' is different to that reported at ICSE'16. One area
+where this might be true was in the area of feature selection. We use much of the same
+data as Sarro et al. but   they report that they used fewer columns that was is available in that  data.
+This suggests that CoGEE comes with an undocumented feature selection component. 
 
-
-  \input{DE_pseudo_code.tex}
-  DE evolves a new generation  of candidates from a current population $\mathit{pop}_i$ of size $\mathit{np}$. Each candidate solution for effort estimation
-is  pair of (Tunings, Scores) where 
-Tunings are selected from the above options for ABEN;
-and Scores come from training a learner using those {\em parameters} and applying it to test data.
-
- 
-  The premise of DE is that the best way to mutate the existing tunings is to extrapolate between current solutions. Three solutions $a, b, c$ are selected at random. For each tuning {\em parameter} $k$, at some probability $cr$, we replace the old tuning $x_k$ with $y_k$. For
- booleans $y_k = \neg x_k$ and for numerics, 
-\mbox{$y_k = a_k + f \times (b_k - c_k)$}
-where $f$ is a
- {\em parameter} controlling cross-over.  
-The main loop of DE runs over the population, replacing old items with new candidates (if new candidate is better). This means that, as the loop progresses, the population is full of increasingly more valuable solutions (which, in turn,
-helps   extrapolation).  
-
-
-
-As to the control {\em parameters} of DE,  using advice from Storn~\cite{storn1997differential}, we set $\mathit{np}=20$. 
-The number of generations $\mathit{gen}\in\{2,8\}$ was set as follows. A   small number (2) was used to test
-the effects of  a very   CPU-lite    effort estimator. A  larger number (8) was used to check if anything was
-lost by restricting the inference to just two generations.
 
 \input{dataset.tex}
 
 
-\subsection{Other Optimizers}
-Once DOIL's layers were  built, it was simple  to ``pop the top'' and replace differential evolution with
-other optimizers. This section describes the other optimizers used in this study. These were selected
-using advice from Nair et al.~\cite{nair18} who advise that for search-based SE studies,
-use ``dumb+two+next''  optimizers where ``dumb'' is some baseline method;
-``two'' as well-established optimizers;  and ``next'' is a more recent method.
-\bi
+
+\input{data_num.tex}
+
+
+\subsection{OIL}
+
+
+  OIL is  our  architecture for exploring hyperparameter optimization and effort estimation,
+  Initially, our plan
+was to use standard hyperparameter  tuning for this task. Then we learned that (a)~standard data mining toolkits like scikit-learn~\cite{pedregosa2011scikit} lacked 
+some of  ABEN variants; and (b) standard {\em hyperparameter} tuners can be  slow     (sklearn recommends a default runtime of 24 hours~\cite{sk18}).  Hence, we build OIL,  implemented as a 
+ layered architecture:
+ \bi
+ \item
+At the lowest {\em library layer}, OIL uses   Python  Scikit-Learn~\cite{pedregosa2011scikit}. 
 \item
-Here, our  ``dumb'' optimizer is  Random Choice (hereafter, RD). To find $N$ valid configurations, RD
+Above that, there is a {\em utilities layer} containing all the algorithms missing in Scikit-Learn (e.g., ABEN required
+numerous additions at the utilities layer). 
+\item
+Higher up, OIL's {\em modelling layer} uses an XML-based domain-specific language to specify a {\em feature} map of data mining options.
+These feature models are single-parent and-or graphs with (optionally) cross-tree constraints showing what options require or exclude other options.
+A graphical representation of  the feature model used in this paper is shown in \fig{featuretree}.
+\item
+Finally, at top-most {\em optimizer layer}, there is some optimizer that  makes decisions across the {\em feature} map. An automatic {\em mapper} facility then links those decisions
+down to the lower layers to run the selected algorithms.  
+\ei
+\subsection{Optimizers}
+Once OIL's layers were  built, it was simple  to ``pop the top'' and replace the top
+layer with another optimizer.
+Nair et al.~\cite{nair18}   advise that for search-based SE studies, optimizers should be selecting
+via the a 
+  ``dumb+two+next''  rule. Here,   ``dumb'' is some baseline method;
+``two'' are some  well-established optimizers;  and ``next'' is a more recent method which may not have been
+applied before to this domain.
+
+For our ``dumb''  optimizer, we used   Random Choice (hereafter, RD). To find $N$ valid configurations, RD
 selects leaves at random from \fig{featuretree}.
-All these $N$ variants are executed and the best one is selected for application to the test set. To maintain parity with   DE2 and DE8, DOIL uses  $N\in\{40,160\}$ (which we denote RD40 and RD160). 
-\item
-Moving on, our ``two'' well-established optimizer are DE and NSGA-II~\cite{deb02}. These have been used frequently in the SE literature\cite{Fu2016TuningFS,AGRAWAL2018,agrawal2017better,sayyad2013value,sayyad2013pareto}. 
-DE was described above. NSGA-II is a standard genetic algorithm  (for N generations, mutate, crossover, select best candidates  for the next generation) with a fast   select operator. 
+All these $N$ variants are executed and the best one is selected for application to the test set. To maintain parity with   DE2 and DE8 systems described below, 
+OIL uses  $N\in\{40,160\}$ (denoted RD40 and RD160). 
+
+Moving on, our ``two'' well-established optimizer are differential evolution (hereafter, DE~\cite{storn1997differential}) and NSGA-II~\cite{deb02}. These have been used frequently in the SE literature\cite{Fu2016TuningFS,AGRAWAL2018,agrawal2017better,sayyad2013value,sayyad2013pareto}.
+ NSGA-II is a standard genetic algorithm  (for N generations, mutate, crossover, select best candidates  for the next generation) with a fast   select operator. 
 All candidates that dominated $i$ other items are grouped into together in ``band'' $i$.
 When selecting $C$ candidates for the next generation, the top bands $1..i$ with $M< C$ candidates
 are all selected.  Next, using a  near-linear time pruning operator, the $i+1$ band is pruned down to $C-M$ items, all of which are selected.
- \item
-As to our ``next'' optimizer, we use the more recent MOEA/D algorithm~\cite{Zhang07}.
-MOEA/D uses a  decomposition approach to convert multiple objective
-optimization functions
-into a number of single objective optimization problems.  Prior to inference,
-all candidates are assigned random weights to all the goals. Candidates
-with similar weights are said to be in the same ``neighborhood''. When any member
-of a neighborhood finds a useful mutation, then all  neighbors are  mutated
-in that direction. Note that  these neighborhoods can pre-computed and cached
-prior to evolution. Hence, MOEA/D runs very quickly.
-\ei
 
-\input{data_num.tex}
+
+ The premise of DE is that the best way to mutate the existing tunings is to extrapolate between current solutions. Three solutions $a, b, c$ are selected at random. For each tuning {\em parameter} $k$, at some probability $cr$, we replace the old tuning $x_k$ with $y_k$. For
+ booleans $y_k = \neg x_k$ and for numerics, 
+\mbox{$y_k = a_k + f \times (b_k - c_k)$}
+where $f$ is a
+ {\em parameter} controlling cross-over.  
+The main loop of DE runs over the population of size $np$, replacing old items with new candidates (if new candidate is better). This means that, as the loop progresses, the population is full of increasingly more valuable solutions (which, in turn,
+helps   extrapolation). 
+As to the control {\em parameters} of DE,  using advice from Storn~\cite{storn1997differential}, we set $\{\mathit{np,g,cr}\}=\{20,0.75,0.3\}$.
+The number of generations $\mathit{gen}\in\{2,8\}$ was set as follows. A   small number (2) was used to test
+the effects of  a very   CPU-light    effort estimator. A  larger number (8) was used to check if anything was
+lost by restricting the inference to just two generations. These two versions were denoted DE2 and DE8.
+
+As to our ``next'' optimizer, we used MOEA/D~\cite{Zhang07}.
+This is a decomposition approach that
+runs simultaneous   problems at once, as follows.  Prior to inference,
+all candidates are assigned random weights to all  goals. Candidates
+with similar weights are said to be in the same ``neighborhood''. When any candidate
+ finds a useful mutation, then this candidate's
+ values are copied to all neighbors that are further away than the candidate from the  best ``Utopian point''. Note that  these neighborhoods can be pre-computed and cached
+prior to evolution. Hence, MOEA/D runs very quickly.
+To the best of our knowledge, MOEA/D has not been previously applied to effort estimation.
 
  
  
@@ -671,20 +727,29 @@ prior to evolution. Hence, MOEA/D runs very quickly.
 
 \subsection{Data}
 
-To assess DOIL, we applied it to the 945 projects
+To assess OIL, we applied it to the 945 projects
 seen in nine    datasets from the SEACRAFT repository (http://tiny.cc/seacraft); see Table~\ref{table:dataset} and Table~\ref{table:dataset_c}. 
-This data was used since it has been  widely  used in previous estimation research.
-Also, it  is quite diverse since it differs for: observation number (from 15 to 499 projects); number and type of {\em features} (from 6 to 25 {\em features}, including a variety of {\em features} describing the software projects, such as number of developers involved in the project and their experience, technologies used, size in terms of Function Points, etc.); technical characteristics (software projects developed in different programming languages and for different application domains, ranging from telecommunications to commercial information systems); geographical locations (software projects coming from China, Canada, Finland). 
+This data was selected since it has been  widely  used in previous estimation research.
+Also, it  is quite diverse since it differs for:
+\bi
+\item
+Observation number (from 15 to 499 projects). 
+\item
+Number and type of {\em features} (from 6 to 25 {\em features}, including a variety of {\em features} describing the software projects, such as number of developers involved in the project and their experience, technologies used, size in terms of Function Points, etc.).
+\item
+Technical characteristics (software projects developed in different programming languages and for different application domains, ranging from telecommunications to commercial information systems).
+\item
+Geographical locations (software projects coming from China, Canada, Finland). 
+\ei
 
 
-\subsection{Evaluation Metrics}
 
-
- 
-DOIL collects information on two performance metrics: magnitude of the relative error (MRE)~\cite{Conte:1986:SEM:6176} and Standardized Accuracy (SA).  We make no comment
-on which   measure is better-- these were selected since they are widely used in the literature.
-
-
+\begin{table}
+\caption{Performance scores: MRE and SA}\label{samre}
+\begin{tabular}{|p{.95\linewidth}|}\hline
+The performance   for our effort estimators are measured in terms of MRE and SA, defined in this figure.
+\\\hline
+{\bf MRE:}
 MRE is defined in terms of 
 AR,  the magnitude of the absolute residual. This is  computed from the difference between predicted and actual effort {\em values}:
 \[
@@ -694,9 +759,10 @@ MRE is the magnitude of the relative error calculated by expressing AR as a rati
 \[
 \mathit{MRE} = \frac{|\mathit{actual}_i - \mathit{predicted}_i|}{\mathit{actual}_i}
 \]
-
 MRE has been criticized~\cite{foss2003simulation,kitchenham2001accuracy,korte2008confidence,port2008comparative,shepperd2000building,stensrud2003further} as being biased towards error underestimations. 
-Some researchers prefer the 
+\\\hline
+{\bf SA:}
+Because of issues with MRE, some researchers prefer the 
 use of other (more standardized) measures, such as  Standardized Accuracy (SA)~\cite{langdon2016exact,shepperd2012evaluating}.
 SA is defined in terms of 
 \[
@@ -708,18 +774,12 @@ SA uses MAE as follows:
 \mathit{SA} = (1-\frac{\mathit{MAE}_{P_{j}}}{\mathit{MAE}_{r_{guess}}})\times 100
 \]
 where $\mathit{MAE}_{P_{j}}$ is the MAE of the approach $P_j$ being evaluated and $\mathit{MAE}_{r_{\mathit{guess}}}$ is the MAE of a large number (e.g., 1000 runs) of random guesses. 
-The important thing about SA is that,
-over many runs,  $\mathit{MAE}_{r_{\mathit{guess}}}$ will converge on simply using the sample mean~\cite{shepperd2012evaluating}. SA represents how much better $P_j$ is than random guessing. {\em Values} near zero means that the prediction model $P_j$ is practically useless, performing little better than  random guesses~\cite{shepperd2012evaluating}. 
+Over many runs,  $\mathit{MAE}_{r_{\mathit{guess}}}$ will converge on simply using the sample mean~\cite{shepperd2012evaluating}. That is, SA represents how much better $P_j$ is than random guessing. {\em Values} near zero means that the prediction model $P_j$ is practically useless, performing little better than  random guesses~\cite{shepperd2012evaluating}. \\\hline
+\end{tabular}
+\end{table}
 
 
-
-Note that for these evaluation measures:
-\bi
-\item {\em smaller} MRE {\em values} are {\em better};
-\item
-while {\em larger} SA {\em values} are {\em better}.
-\ei
-% It is good practice to benchmark new methods against a variety of different approaches. Accordingly, DOIL uses the following algorithms:
+% It is good practice to benchmark new methods against a variety of different approaches. Accordingly, OIL uses the following algorithms:
 % \bi
 % \item
 % \textbf{ABE0} was described above. It   is  widely used ~\cite{7194627,Kocaguneli2015,7426628,6092574,MenziesNeg:2017}. 
@@ -737,16 +797,15 @@ while {\em larger} SA {\em values} are {\em better}.
 
  
  
- \subsection{Experimental Rig}
-DOIL performs a  $X$-fold cross validation for each of (ABE0, ATLM, DE2, DE8, RD40, RD160), for each of our nine data sets.  To apply this, datasets are partitioned into 
-$X$ sets (the observations were sampled uniformly at random, without replacement),
- and then for each set DOIL considered it as a testing set and the remaining 
- observations as training set. For datasets \textit{kemerer}, \textit{albrecht}, \textit{isbsg10} and \textit{finnish}, 
-we uses three-fold cross validation since their instances are less than 40. For the other  larger datasets \textit{miyazaki}, \textit{maxwell}, \textit{desharnais}, \textit{kitchenham} and \textit{china},  we use ten-fold. 
+%  \subsection{Experimental Rig}
+% OIL performs a  $X$-fold cross validation for each of (ABE0, ATLM, DE2, DE8, RD40, RD160), for each of our nine data sets.  To apply this, datasets are partitioned into 
+% $X$ sets (the observations were sampled uniformly at random, without replacement),
+%  and then for each set OIL considered it as a testing set and the remaining 
+%  observations as training set. For datasets \textit{kemerer}, \textit{albrecht}, \textit{isbsg10} and \textit{finnish}, 
+% we uses three-fold cross validation since their instances are less than 40. For the other  larger datasets \textit{miyazaki}, \textit{maxwell}, \textit{desharnais}, \textit{kitchenham} and \textit{china},  we use ten-fold. 
 
-Since our folds are selected in a stochastic manner, we repeat the cross-vals 20 times, each time with different random seeds.
+% Since our folds are selected in a stochastic manner, we repeat the cross-vals 20 times, each time with different random seeds.
 
- \input{parameter_distribution.tex}
 
 % \begin{wrapfigure}{r}{3.5in}
 % %  \begin{minipage}[c]{0.4\textwidth}
@@ -774,7 +833,7 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
 
 
  
-% DOIL's cross-valid experiments generate 100s of MRE and SA {\em values} for each dataset. For example, 
+% OIL's cross-valid experiments generate 100s of MRE and SA {\em values} for each dataset. For example, 
 % Figure~\ref{fig:mresa} shows results from our six method on the   maxwell dataset. For these   plots, all  lines are sorted separately.
 % As can be seen,  for maxwell,  DE8,DE2 perform very well and   ABE0 and ATLM perform much worse.
 
@@ -808,18 +867,18 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
 % This table shows how often different options were selected by the best optimizer seen in this study.
 % Note that, very rarely, is one option selected most of the time (exception: clearly our {\em outlier} operator is not very good-- this should be explored further in future work). 
 % From this table, it is clear that the   best configuration is not only data set specific, but all specific to the training set used within a data set. 
-% This means that {\bf RQ1=no} and tools like DOIL are very important for configuring effort estimation methods.
+% This means that {\bf RQ1=no} and tools like OIL are very important for configuring effort estimation methods.
 
 % {\bf RQ2: Pragmatically speaking, is SBSE too hard to apply to effort estimation?}
 
 % As mentioned in the introduction, some SBSE methods can be very slow. While such long runtimes 
-% are certainly required in other domains, for configuring effort estimation methods,  SBSE can terminate much faster than that.  Figure~\ref{fig:runtime} shows  the time required to generate our results (on a standard 8GB, 3GHz desktop machine). 
-\input{runtime.tex}  
+% are certainly required in other domains, for configuring effort estimation methods,  SBSE can terminate much faster than that.  Table~\ref{tbl:runtime} shows  the time required to generate our results (on a standard 8GB, 3GHz desktop machine). 
+
 % Note that standard
 % effort estimation methods (i.e., ABE0 and ATLM) run very fast indeed compare to anything else. Hence, pragmatically,
 % it seems tempting to recommend these faster systems. Nevertheless, this paper will recommend somewhat slower methods
 % since, as shown below, these faster methods (i.e., ABE0 and ATLM) result in very poor estimates. 
-% The good news from Figure~\ref{fig:runtime} is that   cross-validation for the methods  we  will recommend (DE2) takes just a few minutes to terminate.
+% The good news from Table~\ref{tbl:runtime} is that   cross-validation for the methods  we  will recommend (DE2) takes just a few minutes to terminate.
 % Hence we say that  {\bf RQ2=no} since SBSE can quite quickly commission an effort estimator, tuned specifically to a data set. 
 % % faster than the time required for  a cup of coffee.
 
@@ -843,7 +902,7 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
 % distributions.  
 
 % In Figure~\ref{fig:jur}, {\em Rank=1} denotes the better results.
-% When multiple treatments  receive top rank, we use the runtimes of  Figure~\ref{fig:runtime}
+% When multiple treatments  receive top rank, we use the runtimes of  Table~\ref{tbl:runtime}
 % to break ties. 
 % For example, in the {\it kemerer} MRE results, four methods have {\em Rank=1}. However, 
 % two of these methods (DE2 and RD40) are much faster than the others.
@@ -852,7 +911,7 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
 
 
 % (Technical aside: there is no statistically
-% significant difference between the runtimes of RD40 and DE2 in Figure~\ref{fig:runtime}, as determined by a 95\% bootstrap test.
+% significant difference between the runtimes of RD40 and DE2 in Table~\ref{tbl:runtime}, as determined by a 95\% bootstrap test.
 % Hence, when assigning the \colorbox{black!10}{{\em Rank=1*}}, we say that RD40 runs as fast as DE2.)
 
 
@@ -870,7 +929,7 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
 % \item
 % Another widely-used method in effort estimation is the ABE0 analogy-based 
 % effort estimator.  In 15/18 of the Figure~\ref{fig:jur}  results, ABE0 is ranked  better than ATLM.
-% That is, if the reader wants to avoid the added complexity of SBSE, they could ignore our advocacy for DOIL and
+% That is, if the reader wants to avoid the added complexity of SBSE, they could ignore our advocacy for OIL and
 % instead just use ABE0.
 % That said, ABE0 is only top-ranked in 1/18 of our results. Clearly, there are better methods than ABE0.
 % \item
@@ -887,30 +946,37 @@ Since our folds are selected in a stochastic manner, we repeat the cross-vals 20
  
 % In summary {\bf RQ3=yes} since SBSE produces much better effort estimates than widely-used effort estimation methods.
 
-\section{Experimental Terminology}
+\subsection{Cross-Validation}
 
 
-The following experiments use the following terminology.
-
-Experimental results come from  an {\em M*N-way} cross validation process. That is, $M$ times, the order of the rows in the data 
-was  randomly shuffled using a different random number seed.
+Our experimental results come from  an {\em M*N-way} cross validation process. That is, $M$ times, the order of the rows in the data 
+is  randomly shuffled using a different random number seed.
 Such shuffling   mitigates for ``order effects'' where the results
-Of the learner are the result of some fortuitous, but unlikely, ordering of the training/test data.  
+of the learning are the result of some fortuitous, but unlikely, ordering of the training/test data.  
 
 As to the {\em N-way}, this refers to dividing the data into $N$ bins after each shuffle.
-For $i in \in N$, bin $i$ is used to test a model
+For $i   \in N$, bin $i$ is used to test a model
 build from the other bins.
 Following the advice
-of Nair et al.~\cite{nair18}, for the smaller data sets, $N=3$  bins
+of Nair et al.~\cite{nair18}, for the smaller data sets (with 40 rows or less), we $N=3$  bins
 and for the larger dataset $N=10$ bins.   
 
 Each data sets is treated in a variety of  ways. Each {\em treatment} is an {\em M*N-way} test of some learner or some learner and optimizer.
-As a procedural detail, first we divide the data and then we apply the treatments. That is, all treatments see the same training and test data.
+As a procedural detail, first we divided the data and then we applied the treatments. That is, all treatments see the same training and test data.
 
-The results from each test set are measured in terms of two evaluation metrics: the SA and MRE scores described above. 
-Recall that for these evaluation measures,  the {\em smaller} MRE {\em values} are {\em better}
+
+\subsection{Scoring Metrics}
+
+The results from each test set are evaluated in terms of two scoring metrics:  magnitude of the relative error (MRE)~\cite{Conte:1986:SEM:6176} and Standardized Accuracy (SA). These scoring metrics  are defined in Table~\ref{samre}.
+We make no comment
+on which   measure is better-- these were selected since they are widely used in the literature.
+
+Note that for these evaluation measures:
+\bi
+\item {\em smaller} MRE {\em values} are {\em better};
+\item
 while {\em larger} SA {\em values} are {\em better}.
-
+\ei
 From this cross-validations,
 we  report the {\em median} (sometimes shortened to {\em med})
 which is the 50th percentile of the sorted test scores seen in the {\em M*N results}.
@@ -926,38 +992,12 @@ To judge when two sets of treatments are indistinguishable, we use a conjunction
 a A12 test for a non-small effect size difference in the distributions~\cite{MenziesNeg:2017}. These tests were used since their non-parametric nature avoids issues with non-Gaussian
 distributions.  
 
+Figure~\ref{eg} shows an example of the report generated by our Scott-Knott procedure.
+Note that when multiple treatments tie for {\em Rank=1}, then we use the treatment's
+runtimes to break the tie. Specifically, for all treatments in {\em Rank=1}, we mark the faster ones {\em Rank=1*}.
 
 
 
-Treatments have their own terminology.
- Some treatments are  called {\em default} since they execute with their
-default parameter settings. Those methods are {\em CART0, ABE0, COGEE}.
-
-Also, treatments differ in  their underlying  {\em assumptions} about how to best model the data:
-\bi
-\item Analogy treatments (ABE0, ABEN) will work best when data divides into many tiny local models. That is, the analogy treatments make an {\em locality} assumption.
-\item On the other hand, treatments that fit all the data to one equation (ATLM, CoGEE) assume that one model fits all. Such treatments make a {\em globally} assumption.
-\item Regression trees like CART assume that the data corresponds to something in-between fully local and fully global assumptions. CART eschews a fully global model since its tree divides the training data into several sections. However, CART is not fully local either since each CART section contains many examples.
-\ei
-
-
-Some treatments are named ``X\_Y'' and the denote learned ``X'' tuned by optimizer ``Y''.
-In the following: 
-
-{\small \begin{eqnarray} 
-X &\in &\{\mathit{CART},\mathit{ABE}\}\nonumber\\
-Y &\in &\{\mathit{DE2},\mathit{DE8},\mathit{MOEA/D},\mathit{NSGA2},\mathit{RD40}, \mathit{RD160}\}\nonumber\\
-\end{eqnarray}}
-Note that we do not tune COGGEE since, as shown in \fig{runtime}, running that treatment even once is slow enough, let alone the hundred of re-runs required for additional tuning. Also, we do not tune ATLM since it was designed to be used ```off the shelf''. Indeed, Whigham etl.~\cite{w15} proudly boast that one of ATLM's most important features ins that if doe s not need tuning/
-
-Another   distinction is  that of {\em fastest} and {\em slowest} treatments.
-As shown in \fig{runtime}, around half of our treatments are relatively fastest, taking less than a minute for a single train/test pair. These 
-{\em fastest} methods are {\em ABE, CART0, ATLM, CART\_DE2, CART\_DE8} and {\em CART\_MODEA/D}.
-All other treatments are {\em slower} since as shown in  \fig{runtimes}, they can take many minutes to hours to process a single train/test pair.
-Note that in the {\em Rank=1} results (as computed by the Scott-Knott procedure described above),  if there exists a mix of fastest and slowest treatments
-then we will prefer the fastest ones . Such fastest {\em Rank=1} treatments are  denoted {\em Rank=1*}. 
-Figure~\ref{eg} shows an example
-set of results that highlights the {\em Rank=1*} rows.
 
 \begin{figure}
 
@@ -987,62 +1027,230 @@ set of results that highlights the {\em Rank=1*} rows.
  MRE scores seen in various
  treatments on the China data set,
  sorted by their median value. 
+ Here, {\em smaller} values are {\em better}.
   {\bf Med} is the 50th percentile and {\bf IQR} is the {\em inter-quartile range}; i.e., 75th-25th percentile. 
-    Lines with a dot in the middle (e.g.,\protect\quartex{3}{13}{13}{0})
-   show   median values with the IQR.   
+    Lines with a dot in the middle \mbox{(e.g., ``\protect\quart{50}{40}{60}{0}'')}
+   shows   median values with the IQR.   
    The left-hand side columns {\bf Rank} results (and the {\em smaller}, the {\em better}).
+   Ranks are computed via the Mittas et al. Scott-Knot procedure from  TSE’15~\cite{Mittas13}.
     Rows with the same ranks
     are statistically indistinguishable. 
   \colorbox{gray!20}{1*} denotes rows of fastest best-ranked treatments.}\label{eg}
 \end{figure}
 
-
-
-It will be seen below that no treatment is best over all data sets and performance scores.  However, what will be seen is that a small set
-treatments ({\em \{CART\_DE8, CART\_MOEAD\}}) that always have at least one
-member  that achieve  {\em Rank=1*} in many data sets. 
-We say that this set {\em covers} the results and will recommend that, in future, researchers and industrial practitioners should work more on these covering treatments that any other.
-
 \input{temp3} 
+
+\subsection{Terminology for Optimizers}
+
+Some treatments are named ``X\_Y'' which  denote learner ``X'' tuned by optimizer ``Y''.
+In the following: 
+
+{\small \begin{eqnarray} 
+X &\in &\{\mathit{CART},\mathit{ABE}\}\nonumber\\
+Y &\in &\{\mathit{DE2},\mathit{DE8},\mathit{MOEA/D},\mathit{NSGA2},\mathit{RD40}, \mathit{RD160}\}\nonumber
+\end{eqnarray}}
+Note that we do not tune CoGEE since, as shown in Table~\ref{tbl:runtime}, running that treatment even once is slow enough, let alone the hundred of re-runs required for additional tuning. Also, we do not tune ATLM since it was designed to be used ```off the shelf''.  Whigham etl.~\cite{Whigham:2015} proudly declare that one of ATLM's most important features is that if does not need tuning.
+
+
+
 
 \section{Results}
  
  Figure~\ref{fig:jur} shows results from all
- data sets and both performance scores. For space reasons,
- not 
- all treatments are shown\footnote{ For a display of all the  results, see pasteboard.co/Hi77tVD.png.}. Specifically, all the slower treatments
- (as defined in \fig{runtimes}) that are not found in {\em Rank=1*} have been deleted (since such sub-optimal and slower
- treatments need not be discussed further).
+ data sets and both performance scores. 
  
- {\bf RQ1: Is is best just to use the defaults?}
+ 
+ Table~\ref{tbl:runtime} shows the runtimes (in minutes) for all
+ the techniques explored in this study.
+ 
+ For space reasons,
+ not 
+ all treatments are shown in Figure~\ref{fig:jur}. Specifically, all the slower treatments
+ (as defined in Table~\ref{tbl:runtime}) that were not ranked first   have been deleted (since such sub-optimal and slower
+ treatments need not be discussed further). For a display of all the  results, see pasteboard.co/Hi77tVD.png.
+ 
+ Using these results, we can answer numerous research questions.
+ \bi
+ \item To address the primary concenr raised by Acuri \& Fraser in the introduction,
+ we must  first ask {\em is it best just to use ``off-the-shelf'' defaults} (RQ1).
+ \item An alternate form if that questions is to ask if all this tuning
+ effort can be avoided if  {\em  replace the old defaults with new defaults} (RQ2).
+\ei
+
+
+\input{runtime.tex}  
+
+
+ \noindent{\bf RQ1: Is is best just to use the ``off-the-shelf'' defaults?}
  
  As mentioned in the introduction, 
  Acuri \& Fraser note that for
- test case generation, sometime   is best just
- to use default settings. In the case of effort estimation, the results of  Figure~\ref{fig:jur} there are several
- where default learners score {\em Rank=1*} (e.g. see the CoGEEE treatments results in Kitcheham).  That said,
- we cannot recommend rely on default learners since:
+ test case generation,   using the default settings
+can work just as well as anything else. 
+ We can see some evidence of this effect in  Figure~\ref{fig:jur}. Observe, for example, the
+  kitcheham results where the untuned CoGEE treatment achieves {\em Rank=1*}.  
+  That said,  Figure~\ref{fig:jur} is mostly negative on the use of default settings:
  \bi
  \item
 In   9/18 of the results  of Figure~\ref{fig:jur}, there are
 no default treatments found in  {\em Rank=1*}. 
  \item
  In 6/18 of the remainder, default
- treatments share {\em Rank=1*} status with some tuned learner.
+ treatments share {\em Rank=1*} status with some tuned learner. 
  \ei
- That is, using the defaults is recommended in very few
- data sets while tuned treatments can be recommended
- in 15/18 of our results.
+ Another aspect to note of the Figure~\ref{fig:jur} results
+ are the large differences in performance scores
+ between the best and worst treatments (exceptions: albrecht and  isbsg10's MRE scores do not vary much). That is, there is much to be gained by using the {\em Rank=1+ treatments} and avoiding the rest.
+ 
+ In summary,  using the defaults is recommended in very few
+ data sets. Also, in terms of better test scores,
+ there is much to be gained   from tuning. Hence. for effort estimation:
  
  \begin{result}{1}
- For effort estimation, it is better to tune than not tune.
+``off-the-shelf'' defaults
+ should be deprecated.
  \end{result}
+ 
+
+
+ \input{parameter_distribution.tex}
+ 
+
+\noindent{\bf RQ2: Can we replace the old   defaults
+ with new defaults?}
+ 
+ If the hyperparameter tunings found by this paper
+ were nearly always the same, then this study
+ could conclude by recommending better values
+ for default settings. This would
+ be a most convenient result since it would mean that,
+ in future, the complexities of this study need not be repeated when new data arrives.
+ 
+This turns out not to be the case.
+Table~\ref{table:para_dist} shows the percent frequencies with which
+some tuning decision appears in our {\em M*N-way} cross validations.
+This table reports results from DE tuning CART since, as shown below,
+this usually leads to best results.
+If we count the times some tuning choice appears in more than 50\% of the datasets of that table, only one tuning decision seems moderately common: use $\le 3$ min\_samples
+in the leaves of a regression tree. But even here, there are numerous examples
+were that was not the best tuning.
+
+Overall, we summarize Table~\ref{table:para_dist} as showing that there is 
+much variations in the best tunings. 
+Hence, for effort estimation:
+
+ \begin{result}{2}
+ Overall, there is no ``best'' default settings for
+ learners.
+ \end{result}
+
+Before going on, one curious aspect of the Table~\ref{table:para_dist} results are the 
+\%max\_features results. Note that in those results, it was rarely most useful to use all features. Except for our largest data set (china), best results were often obtained after discarding (at random) a quarter to three-quarters of the features. This is a clear indication that, in future work, it could be advantageous to explore more feature selection for CART models.
+
  
  
 
-RQ1: I using defaults enough.
-As mentioned in the introduction
-According the Acuri \& Fraser
+\noindent{\bf RQ3: Can we avoid slow hyperparameter optimization?}
+
+``Kilo-optimizers'' such as  NSGA-II and CoGEE examine $10^3$ candidates or more.
+since  they explore population sizes
+of $10^2$ for many generations. Hence, as shown in Table~\ref{tbl:runtime},
+they can be very slow.
+
+Is it possible to avoid such slow runtimes?
+There are many heuristic methods for speeding up
+kilo-optimization:
+\bi
+\item Active learners  select explore a few most informative candidates~\cite{krall15};
+\item Decomposition learners like MOEA/D  convert large
+objective problems into multiple smaller problems;
+\item
+Other optimizers just explore   fewer candidates;
+e.g.    DE and RN.
+\ei
+
+Kilo-optimization is necessary when their exploration of  more candidates leads to better solutions that heuristic exploration.
+Just better solutions are rarely found in Figure~\ref{fig:jur} (only in 3/18 cases: see kitchenham and the SA results for miyazaki). Further, the size of the improvements
+seen with kilo-optimizers   over the best Rank=2 treatments is very small (max=14\%).
+Those improvements come at significant runtime cost (in Table~\ref{tbl:runtime}), the kilo-optimizers
+are one to two orders of magnitude slower than other methods). Hence we say that for effort estimation:
+
+    \begin{result}{3}
+    The occasional benefits of kilo-optimizers is far out-weighed by their runtime cost.
+ \end{result}
+  
+\noindent{\bf RQ6: What  hyperparatmeter optimizers to use for effort estimation?}
+Consider three experimental procedures:
+\be
+\item
+\underline{{\em ALL:}} Assuming no restrictions on total runtime or access to a CPU farm, a researcher
+or industrial practitioner could run all the treatments reported in that paper
+to generate their own version of Figure~\ref{fig:jur}. 
+\item
+\underline{{\em SOME:}} Alternatively, to they avoid the methods deprecated in these results,
+that procedure could be restricted
+to just  CoGEE or  CART, where the latter is optimized by either DE8 or MOEA/D or NSGA-II.That combination generates best results in 18/18 of our results.
+\item \underline{{\em MIN:}} 
+Finally, taking the advice of {\bf Result5}, a more pragmatic approach would be to run just CART, optimized by DE8 or MOEA/D.
+\ee
+Using the 25th to 75th percentile of the runtimes in   Table~\ref{tbl:runtime}, we estimate that:
+\bi
+\item
+The \underline{{\em ALL}} procedure would take 37 to   125 hours to terminate;
+\item
+The \underline{{\em SOME}} procedure would take 8.5 to 23 hours to terminate and generate results
+just as good as ALL;
+\item
+The \underline{{\em MIN}}  procedure would take 1.5 hours to terminate and generate results
+as \underline{{\em SOME}}  (in 15/18 cases) and very nearly as good in the remaining 3 cases.
+\ei
+Hence, for effort estimation:
+  \begin{result}{6}
+   We recommend learning effort estimates with CART, tuned with either
+   DE8 or MOEA/D.
+ \end{result}
+
+
+
+\noindent{\bf RQ7: How do our results compare to prior results?}
+
+\noindent{\bf RQ8: Say about effort estimation}
+
+
+
+\noindent{\bf RQ4: Are hyperparatmeter optimizers needed?}
+
+According to Nair et al.~\cite{nair18},
+all studies such as this one should baseline its
+results against a full random search. In our results,
+in 5/18 cases, tunings made by
+  random selection  appear in {\em Rank=1} results
+  (e.g. see the *RD* results for SA and desharnais and kemerer and isbsg10; plus the   SA+MRE results
+  for albrecht).
+  That said, in the majority case ((18-5)/18=172\%), random choice was not most effective. Also, a blind random selection of hyperparameters can take many hours to process a single train/test pair (e.g. see the ABEN results of Table~\ref{tbl:runtime}). Hence, for effort estimation:
+  
+ 
+    \begin{result}{4}
+    It  is recommended
+    to use the informed choices of hyperparameter optimizers such as DE, MOEA/D, etc.
+ \end{result}
+  
+  
+higly quirky
+
+
+
+Treatments have their own terminology.
+ Some treatments are  called {\em default} since they execute with their
+default parameter settings. Those methods are {\em CART0, ABE0, CoGEE}.
+
+Also, treatments differ in  their underlying  {\em assumptions} about how to best model the data:
+\bi
+\item Analogy treatments (ABE0, ABEN) will work best when data divides into many tiny local models. That is, the analogy treatments make an {\em locality} assumption.
+\item On the other hand, treatments that fit all the data to one equation (ATLM, CoGEE) assume that one model fits all. Such treatments make a {\em globally} assumption.
+\item Regression trees like CART assume that the data corresponds to something in-between fully local and fully global assumptions. CART eschews a fully global model since its tree divides the training data into several sections. However, CART is not fully local either since each CART section contains many examples.
+\ei
+
 
 \section{Discussion}\label{sect:discussion}
 
@@ -1092,12 +1300,12 @@ improved with SBSE.
  \textbf{Internal Bias:} All our methods contain stochastic random operators. To reduce the bias from random operators, we 
 repeated our experiment in 20 times and applied statistical tests to remove spurious distinctions.
 
- \textbf{Parameter Bias:} DE plays an important role in DOIL, in this paper, we did not discuss the influence of different DE
+ \textbf{Parameter Bias:} DE plays an important role in OIL, in this paper, we did not discuss the influence of different DE
 {\em parameters}, such as $cr$, $np$, $f$. In this paper, we followed Storn {\it et al.}'s configurations~\cite{storn1997differential}. Clearly, tuning such {\em parameters} is
 a direction for  future work.
 
 
-\textbf{Sampling Bias:} While we tested DOIL on the nine datasets, it would be inappropriate to conclude that DOIL tuning  always perform better than
+\textbf{Sampling Bias:} While we tested OIL on the nine datasets, it would be inappropriate to conclude that OIL tuning  always perform better than
 others methods for all data sets.
 As researchers, what we can do to mitigate this problem is to carefully document out method, release out code,
 and encourage the community to try this method on more datasets, as the occasion arises.
@@ -1116,7 +1324,7 @@ it is possible to very quickly find these best estimators.
 Further, the effort estimators generated by SBSE  out-perform standard methods in widespread use (ABE0 and ATLM). 
 This SBSE process is not an overly burdensome task since, 
 as shown above it is  enough to   perform  40 evaluations of different candidates (guided by DE).
-To be sure,  some additional architecture is required for SBSE and effort estimation, but  we have packaged  that into the DOIL system
+To be sure,  some additional architecture is required for SBSE and effort estimation, but  we have packaged  that into the OIL system
 (which after double blind, we will  distribute as a Python pip package). 
 
 
